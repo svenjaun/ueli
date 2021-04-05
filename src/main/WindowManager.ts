@@ -22,6 +22,7 @@ export class WindowManager {
         });
 
         this.browserWindow.loadFile(this.mainHtmlFilePath);
+        this.browserWindow.on("blur", () => this.hideMainWindow());
     }
 
     public hideMainWindow(): void {
@@ -32,7 +33,12 @@ export class WindowManager {
 
     public showMainWindow(): void {
         if (this.browserWindow && !this.browserWindow.isDestroyed()) {
-            this.browserWindow.show();
+            if (this.browserWindow.isVisible()) {
+                this.browserWindow.focus();
+            } else {
+                this.browserWindow.show();
+            }
+
             this.sendMessageToWindow(this.browserWindow, IpcChannel.MainWindowShown);
         }
     }

@@ -80,7 +80,7 @@ export default Vue.extend({
 }
 
 .inner-container.focussed {
-    border-bottom: 2px solid var(--ueli-blue-dark);
+    border-bottom: 2px solid var(--ueli-blue-bright);
 }
 
 .search-icon {

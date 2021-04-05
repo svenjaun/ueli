@@ -101,5 +101,7 @@ export class MainApplication {
                 return this.openLocationService.openLocation(args[0]);
             }
         );
+
+        this.ipcMain.on(IpcChannel.EscapePressed, () => this.hideWindow());
     }
 }

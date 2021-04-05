@@ -40,21 +40,25 @@ export default Vue.extend({
 
     methods: {
         onGlobalKeyDown(keyboardEvent: KeyboardEvent): void {
-            const events = [
-                { key: "ArrowUp", eventName: VueEvent.UserInputArrowKeyPressed, eventData: keyboardEvent.key },
-                { key: "ArrowDown", eventName: VueEvent.UserInputArrowKeyPressed, eventData: keyboardEvent.key },
-                {
-                    key: "Enter",
-                    eventName: VueEvent.UserInputEnterPressed,
-                    eventData: keyboardEvent.ctrlKey || keyboardEvent.metaKey,
-                },
-            ];
-
-            for (const event of events) {
-                if (event.key === keyboardEvent.key) {
+            switch (keyboardEvent.key) {
+                case "ArrowUp":
+                case "ArrowDown":
                     keyboardEvent.preventDefault();
-                    vueEventEmitter.$emit(event.eventName, event.eventData);
-                }
+                    vueEventEmitter.$emit(VueEvent.UserInputArrowKeyPressed, keyboardEvent.key);
+                    break;
+
+                case "Enter":
+                    keyboardEvent.preventDefault();
+                    vueEventEmitter.$emit(
+                        VueEvent.UserInputEnterPressed,
+                        keyboardEvent.ctrlKey || keyboardEvent.metaKey
+                    );
+                    break;
+
+                case "Escape":
+                    keyboardEvent.preventDefault();
+                    window.Bridge.ipcRenderer.send(IpcChannel.EscapePressed);
+                    break;
             }
         },
 
@@ -101,27 +105,17 @@ export default Vue.extend({
 
 <style>
 :root {
-    --ueli-black: #1e272e;
-    --ueli-black-10: #485460;
-    --ueli-black-20: #808e9b;
+    --ueli-black: #2f3640;
+    --ueli-black-10: #353b48;
+    --ueli-black-20: #718093;
+    --ueli-black-40: #7f8fa6;
 
     --ueli-white: #fff;
-    --ueli-white-05: #d2dae2;
+    --ueli-white-05: #f5f6fa;
+    --ueli-white-10: #dcdde1;
 
-    --ueli-green-dark: #05c46b;
-    --ueli-green-bright: #0be881;
-
-    --ueli-blue-dark: #0fbcf9;
-    --ueli-blue-bright: #4bcffa;
-
-    --ueli-purple-dark: #3c40c6;
-    --ueli-purple-bright: #575fcf;
-
-    --ueli-pink-dark: #ef5777;
-    --ueli-pink-bright: #f53b57;
-
-    --ueli-red-dark: #ff3f34;
-    --ueli-red-bright: #ff5e57;
+    --ueli-blue-dark: #0097e6;
+    --ueli-blue-bright: #00a8ff;
 
     --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
