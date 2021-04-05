@@ -17,6 +17,7 @@
 import Vue from "vue";
 import SearchResultItem from "./SearchResultItem.vue";
 import { searchResultItems } from "../SearchResultItems";
+import { SearchResultItem as SearchResultItemInterface } from "../../common/SearchResultItem";
 
 export default Vue.extend({
     components: { SearchResultItem },
@@ -28,11 +29,11 @@ export default Vue.extend({
     },
 
     methods: {
-        execute(searchResultItem: any): void {
+        execute(searchResultItem: SearchResultItemInterface): void {
             console.log("Execute", searchResultItem.description);
         },
 
-        openLocation(searchResultItem: any): void {
+        openLocation(searchResultItem: SearchResultItemInterface): void {
             console.log("Open location", searchResultItem.description);
         },
     },
