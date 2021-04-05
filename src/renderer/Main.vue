@@ -73,14 +73,28 @@ export default Vue.extend({
         },
 
         onOpenLocationRequested(searchResultItem: SearchResultItem): void {
-            console.log("open location", searchResultItem);
+            window.Bridge.ipcRenderer
+                .invoke(IpcChannel.OpenLocation, searchResultItem)
+                .then(() => console.log("done"))
+                .catch((error) => console.error(error));
+        },
+
+        registerIpcEventListeners(): void {
+            window.Bridge.ipcRenderer.on(IpcChannel.MainWindowShown, () => {
+                vueEventEmitter.$emit(VueEvent.MainWindowShown);
+            });
+        },
+
+        registerVueEventListeners(): void {
+            vueEventEmitter.$on(VueEvent.GlobalKeyDown, (keyboardEvent: KeyboardEvent) =>
+                this.onGlobalKeyDown(keyboardEvent)
+            );
         },
     },
 
     mounted() {
-        vueEventEmitter.$on(VueEvent.GlobalKeyDown, (keyboardEvent: KeyboardEvent) =>
-            this.onGlobalKeyDown(keyboardEvent)
-        );
+        this.registerIpcEventListeners();
+        this.registerVueEventListeners();
     },
 });
 </script>

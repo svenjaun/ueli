@@ -1,9 +1,10 @@
-import { App, globalShortcut, IpcMain } from "electron";
+import { App, GlobalShortcut, IpcMain } from "electron";
 import { IpcMainInvokeEvent } from "electron/main";
 import { IpcChannel } from "../common/IpcChannel";
 import { OperatingSystem } from "../common/OperatingSystem";
 import { SearchResultItem } from "../common/SearchResultItem";
 import { ExecutionService } from "./ExecutionService";
+import { OpenLocationService } from "./OpenLocationService";
 import { SearchEngine } from "./SearchEngine";
 import { WindowManager } from "./WindowManager";
 
@@ -11,10 +12,12 @@ export class MainApplication {
     constructor(
         private readonly electronApp: App,
         private readonly ipcMain: IpcMain,
+        private readonly globalShortcut: GlobalShortcut,
         private readonly windowManager: WindowManager,
         private readonly operatingSystem: OperatingSystem,
         private readonly searchEngine: SearchEngine,
-        private readonly executionService: ExecutionService
+        private readonly executionService: ExecutionService,
+        private readonly openLocationService: OpenLocationService
     ) {}
 
     public start(): void {
@@ -52,19 +55,11 @@ export class MainApplication {
     }
 
     private hideWindow(): void {
-        this.windowManager.hideWindow();
-    }
-
-    // private showWindow(): void {
-    //     this.windowManager.showWindow();
-    // }
-
-    private toggleWindow(): void {
-        this.windowManager.toggleWindow();
+        this.windowManager.hideMainWindow();
     }
 
     private registerGlobalKeyEventListeners(): void {
-        globalShortcut.register("alt+space", () => this.toggleWindow());
+        this.globalShortcut.register("Alt+Space", () => this.windowManager.toggleMainWindow());
     }
 
     private registerIpcEventListeners(): void {
@@ -91,6 +86,19 @@ export class MainApplication {
                 this.hideWindow();
 
                 return this.executionService.execute(args[0]);
+            }
+        );
+
+        this.ipcMain.handle(
+            IpcChannel.OpenLocation,
+            (event: IpcMainInvokeEvent, args: SearchResultItem[]): Promise<void> => {
+                if (args.length === 0) {
+                    return Promise.reject("Unable to open location. Reason: no search result items given.");
+                }
+
+                this.hideWindow();
+
+                return this.openLocationService.openLocation(args[0]);
             }
         );
     }

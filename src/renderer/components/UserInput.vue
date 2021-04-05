@@ -2,13 +2,23 @@
     <div class="outer-container">
         <div class="inner-container" :class="{ focussed: isFocussed }">
             <i class="search-icon bi-search" :class="{ focussed: isFocussed }"></i>
-            <input class="input" type="text" autofocus v-model="searchTerm" @focus="onFocus" @blur="onBlur" />
+            <input
+                ref="userInput"
+                class="input"
+                type="text"
+                autofocus
+                v-model="searchTerm"
+                @focus="onFocus"
+                @blur="onBlur"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
+import { VueEvent } from "../VueEvent";
+import { vueEventEmitter } from "../VueEventEmitter";
 
 export default Vue.extend({
     data() {
@@ -17,7 +27,13 @@ export default Vue.extend({
             searchTerm: "",
         };
     },
+
     methods: {
+        focusOnUserInput(): void {
+            const $userInput = this.$refs.userInput as HTMLInputElement;
+            $userInput.focus();
+        },
+
         onFocus(): void {
             this.isFocussed = true;
         },
@@ -25,12 +41,20 @@ export default Vue.extend({
         onBlur(): void {
             this.isFocussed = false;
         },
+
+        registerVueEventListeners(): void {
+            vueEventEmitter.$on(VueEvent.MainWindowShown, () => this.focusOnUserInput());
+        },
     },
 
     watch: {
         searchTerm() {
             this.$emit("searchTermChanged", this.searchTerm);
         },
+    },
+
+    mounted() {
+        this.registerVueEventListeners();
     },
 });
 </script>
