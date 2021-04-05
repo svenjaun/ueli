@@ -1,12 +1,14 @@
 import { App, IpcMain } from "electron";
 import { IpcChannel } from "../common/IpcChannel";
+import { OperatingSystem } from "../common/OperatingSystem";
 import { WindowManager } from "./WindowManager";
 
 export class MainApplication {
     constructor(
         private readonly electronApp: App,
         private readonly ipcMain: IpcMain,
-        private readonly winodwManager: WindowManager
+        private readonly winodwManager: WindowManager,
+        private readonly operatingSystem: OperatingSystem
     ) {}
 
     public start(): void {
@@ -14,6 +16,7 @@ export class MainApplication {
     }
 
     private registerElectronAppEventListeners(): void {
+        this.appendCommandlineSwitches();
         this.electronApp.on("ready", () => this.startApp());
         this.electronApp.on("window-all-closed", () => {
             this.electronApp.quit();
@@ -23,6 +26,18 @@ export class MainApplication {
     private startApp(): void {
         this.registerIpcEventListeners();
         this.createBrowserWindow();
+    }
+
+    private appendCommandlineSwitches(): void {
+        const commandlineSwitches: string[] = [];
+
+        if (this.operatingSystem === OperatingSystem.Windows) {
+            commandlineSwitches.push("wm-window-animations-disabled");
+        }
+
+        commandlineSwitches.forEach((commandlineSwitch) =>
+            this.electronApp.commandLine.appendSwitch(commandlineSwitch)
+        );
     }
 
     private createBrowserWindow(): void {

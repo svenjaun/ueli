@@ -9,9 +9,17 @@ const devtool = isProductionBuild ? undefined : "source-map";
 console.log(`Build mode: ${mode}`);
 
 const entryPoints = {
-    main: path.join(__dirname, "src", "main", "main.ts"),
-    preload: path.join(__dirname, "src", "common", "preload.ts"),
-    renderer: path.join(__dirname, "src", "renderer", "renderer.ts"),
+    main: path.join(__dirname, "src", "main", "Main.ts"),
+    preload: path.join(__dirname, "src", "common", "Preload.ts"),
+    renderer: {
+        mainWindow: path.join(__dirname, "src", "renderer", "MainRenderer.ts"),
+        settingsWindow: path.join(
+            __dirname,
+            "src",
+            "renderer",
+            "SettingsRenderer.ts"
+        ),
+    },
 };
 
 const targets = {
@@ -31,7 +39,7 @@ const baseConfig = {
 
 const mainConfig = {
     entry: {
-        main: entryPoints.main,
+        Main: entryPoints.main,
     },
     module: {
         rules: [
@@ -49,7 +57,7 @@ const mainConfig = {
 
 const preloadConfig = {
     entry: {
-        preload: entryPoints.preload,
+        Preload: entryPoints.preload,
     },
     module: {
         rules: [
@@ -65,10 +73,7 @@ const preloadConfig = {
     target: targets.preload,
 };
 
-const rendererConfig = {
-    entry: {
-        renderer: entryPoints.renderer,
-    },
+const rendererBaseConfig = {
     module: {
         rules: [
             {
@@ -103,8 +108,21 @@ const rendererConfig = {
     target: targets.renderer,
 };
 
+const mainRendererConfig = {
+    entry: {
+        MainRenderer: entryPoints.renderer.mainWindow,
+    },
+};
+
+const settingsRendererConfig = {
+    entry: {
+        SettingsRenderer: entryPoints.renderer.settingsWindow,
+    },
+};
+
 module.exports = [
     Object.assign({}, baseConfig, mainConfig),
     Object.assign({}, baseConfig, preloadConfig),
-    Object.assign({}, baseConfig, rendererConfig),
+    Object.assign({}, baseConfig, rendererBaseConfig, mainRendererConfig),
+    Object.assign({}, baseConfig, rendererBaseConfig, settingsRendererConfig),
 ];

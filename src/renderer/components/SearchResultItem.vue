@@ -1,0 +1,120 @@
+<template>
+    <div class="container" @click="onClick">
+        <div class="icon-container">
+            <img class="icon" :src="iconUrl" />
+        </div>
+        <div class="info-container">
+            <div class="name">{{ name }}</div>
+            <div class="description">
+                {{ description }}
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+export default Vue.extend({
+    props: {
+        position: {
+            type: Number,
+            required: true,
+        },
+
+        name: {
+            type: String,
+            required: true,
+        },
+
+        description: {
+            type: String,
+            required: true,
+        },
+
+        icon: {
+            type: String,
+            required: true,
+        },
+    },
+
+    computed: {
+        iconUrl(): string {
+            return `file:///C:\\Users\\Oliver\\Downloads\\test-icons\\${this.icon}.svg`;
+        },
+    },
+
+    methods: {
+        onClick(mouseEvent: MouseEvent): void {
+            if (mouseEvent.shiftKey) {
+                this.$emit("openLocation");
+            } else {
+                this.$emit("execute");
+            }
+        },
+    },
+});
+</script>
+
+<style scoped>
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: var(--ueli-spacing-2x) var(--ueli-spacing-4x);
+    box-sizing: border-box;
+    opacity: 0.75;
+    transition: var(--ueli-transition);
+    user-select: none;
+}
+
+.container:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    opacity: 1;
+}
+
+.container:active {
+    background-color: var(--ueli-black-10);
+}
+
+.container:active > .icon-container > .icon {
+    transform: scale(1.1);
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    opacity: 0.75;
+    box-shadow: 0 0 var(--ueli-spacing-2x) rgba(0, 0, 0, 0.25);
+    transition: var(--ueli-transition);
+}
+
+.info-container {
+    padding: 0 var(--ueli-spacing-4x);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.name,
+.description {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.name {
+    font-size: var(--ueli-font-size-16);
+    font-weight: var(--ueli-font-weight-600);
+    color: var(--ueli-white);
+}
+
+.description {
+    font-size: var(--ueli-font-size-11);
+    font-weight: var(--ueli-font-weight-400);
+    color: var(--ueli-white-05);
+}
+</style>

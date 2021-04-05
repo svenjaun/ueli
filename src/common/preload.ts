@@ -27,7 +27,7 @@ const bridge: Bridge = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         invoke: <T>(channel: IpcChannel, ...arg: any) => {
             return ipcRenderer.invoke(channel, arg) as Promise<T>;
-        }
+        },
     },
 };
 

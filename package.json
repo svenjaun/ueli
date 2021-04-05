@@ -18,7 +18,7 @@
         "vue",
         "quickstart"
     ],
-    "main": "./bundle/main.js",
+    "main": "./bundle/Main.js",
     "scripts": {
         "lint": "./node_modules/.bin/eslint \"src/**/*{ts,vue}\"",
         "test": "./node_modules/.bin/jest --config jest.json --silent .",
@@ -49,5 +49,8 @@
         "vue-template-compiler": "^2.6.12",
         "webpack": "^5.30.0",
         "webpack-cli": "^4.6.0"
+    },
+    "dependencies": {
+        "bootstrap-icons": "^1.4.1"
     }
 }
