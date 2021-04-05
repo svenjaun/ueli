@@ -2,7 +2,7 @@
     <div class="outer-container">
         <div class="inner-container" :class="{ focussed: isFocussed }">
             <i class="search-icon bi-search" :class="{ focussed: isFocussed }"></i>
-            <input class="input" type="text" autofocus @focus="onFocus" @blur="onBlur" />
+            <input class="input" type="text" autofocus v-model="searchTerm" @focus="onFocus" @blur="onBlur" />
         </div>
     </div>
 </template>
@@ -14,6 +14,7 @@ export default Vue.extend({
     data() {
         return {
             isFocussed: false,
+            searchTerm: "",
         };
     },
     methods: {
@@ -23,6 +24,12 @@ export default Vue.extend({
 
         onBlur(): void {
             this.isFocussed = false;
+        },
+    },
+
+    watch: {
+        searchTerm() {
+            this.$emit("searchTermChanged", this.searchTerm);
         },
     },
 });

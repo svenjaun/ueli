@@ -1,10 +1,11 @@
 <template>
     <div class="main-container">
         <div class="user-input-container">
-            <UserInput />
+            <UserInput @searchTermChanged="onSearchTermChanged" />
         </div>
         <div class="search-result-list-container">
             <SearchResultList
+                :searchResultItems="searchResultItems"
                 @executionRequested="onExecutionRequested"
                 @openLocationRequested="onOpenLocationRequested"
             />
@@ -19,12 +20,22 @@ import SearchResultList from "@/components/SearchResultList.vue";
 import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
 import { SearchResultItem } from "../common/SearchResultItem";
-import { searchResultItems } from "./SearchResultItems";
+import { IpcChannel } from "../common/IpcChannel";
+
+interface Data {
+    searchResultItems: SearchResultItem[];
+}
 
 export default Vue.extend({
     components: {
         SearchResultList,
         UserInput,
+    },
+
+    data(): Data {
+        return {
+            searchResultItems: [],
+        };
     },
 
     methods: {
@@ -47,12 +58,22 @@ export default Vue.extend({
             }
         },
 
+        onSearchTermChanged(searchTerm: string): void {
+            window.Bridge.ipcRenderer
+                .invoke<SearchResultItem[]>(IpcChannel.Search, searchTerm)
+                .then((result) => (this.searchResultItems = result))
+                .catch((error) => console.error(error));
+        },
+
         onExecutionRequested(searchResultItem: SearchResultItem): void {
-            console.log("execute", searchResultItem);
+            window.Bridge.ipcRenderer
+                .invoke(IpcChannel.Execute, searchResultItem)
+                .then(() => console.log("done"))
+                .catch((error) => console.error(error));
         },
 
         onOpenLocationRequested(searchResultItem: SearchResultItem): void {
-            console.log("open location", searchResultItems);
+            console.log("open location", searchResultItem);
         },
     },
 

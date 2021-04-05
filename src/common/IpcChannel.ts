@@ -1,3 +1,4 @@
 export enum IpcChannel {
-    rendererReady = "rendererReady",
+    Execute = "Execute",
+    Search = "Search",
 }

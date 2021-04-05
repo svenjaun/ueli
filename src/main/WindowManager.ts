@@ -2,12 +2,7 @@ import { BrowserWindow } from "electron";
 import { join } from "path";
 
 export class WindowManager {
-    private readonly mainHtmlFilePath = join(
-        __dirname,
-        "..",
-        "views",
-        "main.html"
-    );
+    private readonly mainHtmlFilePath = join(__dirname, "..", "views", "main.html");
 
     private readonly preloadFilePath = join(__dirname, "Preload.js");
 
@@ -27,5 +22,23 @@ export class WindowManager {
         });
 
         this.browserWindow.loadFile(this.mainHtmlFilePath);
+    }
+
+    public hideWindow(): void {
+        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
+            this.browserWindow.hide();
+        }
+    }
+
+    public showWindow(): void {
+        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
+            this.browserWindow.show();
+        }
+    }
+
+    public toggleWindow(): void {
+        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
+            this.browserWindow.isVisible() ? this.showWindow() : this.hideWindow();
+        }
     }
 }

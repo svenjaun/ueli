@@ -19,23 +19,27 @@
 <script lang="ts">
 import Vue from "vue";
 import SearchResult from "./SearchResult.vue";
-import { searchResultItems } from "../SearchResultItems";
 import { SearchResultItem } from "../../common/SearchResultItem";
 import { vueEventEmitter } from "../VueEventEmitter";
 import { VueEvent } from "../VueEvent";
 
 interface Data {
     currentlyHoveredPosition?: number;
-    searchResultItems: SearchResultItem[];
 }
 
 export default Vue.extend({
+    props: {
+        searchResultItems: {
+            type: Array as () => SearchResultItem[],
+            required: true,
+        },
+    },
+
     components: { SearchResult },
 
     data(): Data {
         return {
             currentlyHoveredPosition: 0,
-            searchResultItems,
         };
     },
 
