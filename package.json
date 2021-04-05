@@ -1,22 +1,23 @@
 {
-    "name": "electron-typescript-vue-quickstart",
-    "version": "0.1.2",
+    "name": "ueli",
+    "version": "9.0.0-beta",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/oliverschwendener/electron-typescript-vue-quickstart"
+        "url": "https://github.com/oliverschwendener/ueli"
     },
     "author": {
         "email": "oliver.schwendener@hotmail.com",
         "name": "Oliver Schwendener",
         "url": "https://github.com/oliverschwendener"
     },
-    "description": "Electron Typescript Vue Quickstart",
+    "description": "Keystroke launcher for Windows and macOS",
     "keywords": [
-        "electron",
-        "typescript",
-        "vue",
-        "quickstart"
+        "keystroke",
+        "launcher",
+        "search",
+        "Windows",
+        "macOS"
     ],
     "main": "./bundle/Main.js",
     "scripts": {
