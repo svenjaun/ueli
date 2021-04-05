@@ -1,66 +1,110 @@
 const path = require("path");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
-const mode = process.env.NODE_ENV === "production" ? "production" : "development";
-const devtool = process.env.NODE_ENV === "production" ? undefined : "source-map";
+const isProductionBuild = process.env.NODE_ENV === "production";
 
-console.log(`Using "${mode}" mode for webpack bundles`);
+const mode = isProductionBuild ? "production" : "development";
+const devtool = isProductionBuild ? undefined : "source-map";
 
-const mainConfig = {
-    entry: path.join(__dirname, "src", "main", "main.ts"),
+console.log(`Build mode: ${mode}`);
+
+const entryPoints = {
+    main: path.join(__dirname, "src", "main", "main.ts"),
+    preload: path.join(__dirname, "src", "common", "preload.ts"),
+    renderer: path.join(__dirname, "src", "renderer", "renderer.ts"),
+};
+
+const targets = {
+    main: "electron-main",
+    preload: "electron-preload",
+    renderer: "electron-renderer",
+};
+
+const baseConfig = {
     output: {
         filename: "[name].js",
-        path: path.join(__dirname, "bundle")
+        path: path.join(__dirname, "bundle"),
+    },
+    mode,
+    devtool,
+};
+
+const mainConfig = {
+    entry: {
+        main: entryPoints.main,
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader",
-            }
+            },
         ],
     },
     resolve: {
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".js"],
     },
-    mode,
-    target: "electron-main",
-    node: false,
-    devtool,
-    externals: {
-        'sqlite3': 'commonjs sqlite3'
-    }
-}
+    target: targets.main,
+};
 
-const rendererConfig = {
-    entry: path.join(__dirname, "src", "renderer", "renderer.ts"),
-    output: {
-        filename: "renderer.js",
-        path: path.join(__dirname, "bundle")
+const preloadConfig = {
+    entry: {
+        preload: entryPoints.preload,
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 loader: "ts-loader",
-            }
+            },
+        ],
+    },
+    resolve: {
+        extensions: [".ts", ".js"],
+    },
+    target: targets.preload,
+};
+
+const rendererConfig = {
+    entry: {
+        renderer: entryPoints.renderer,
+    },
+    module: {
+        rules: [
+            {
+                test: /\.vue$/,
+                loader: "vue-loader",
+            },
+            {
+                test: /\.tsx?$/,
+                loader: "ts-loader",
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                },
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                test: /\.png$/,
+                use: ["file-loader"],
+            },
         ],
     },
     resolve: {
         alias: {
-            "vue$": "vue/dist/vue.esm.js"
+            "@": path.join(__dirname, "src", "renderer"),
+            vue$: "vue/dist/vue.esm.js",
         },
-        extensions: [".ts", ".js"]
+        extensions: [".ts", ".js"],
     },
-    mode,
-    target: "electron-renderer",
-    node: false,
-    devtool,
-    externals: {
-        'sqlite3': 'commonjs sqlite3'
-    }
+    plugins: [new VueLoaderPlugin()],
+    target: targets.renderer,
 };
 
 module.exports = [
-    mainConfig,
-    rendererConfig
+    Object.assign({}, baseConfig, mainConfig),
+    Object.assign({}, baseConfig, preloadConfig),
+    Object.assign({}, baseConfig, rendererConfig),
 ];

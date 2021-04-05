@@ -26,14 +26,6 @@
       ],
       "console": "internalConsole",
       "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "type": "chrome",
-      "request": "attach",
-      "name": "Electron Renderer",
-      "port": 9223,
-      "webRoot": "${workspaceFolder}",
-      "timeout": 10000
     }
   ]
 }
