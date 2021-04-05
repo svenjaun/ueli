@@ -1,18 +1,8 @@
 <template>
     <div class="outer-container">
         <div class="inner-container" :class="{ focussed: isFocussed }">
-            <i
-                class="search-icon bi-search"
-                :class="{ focussed: isFocussed }"
-            ></i>
-            <input
-                class="input"
-                type="text"
-                autofocus
-                @focus="onFocus"
-                @blur="onBlur"
-                @keydown="onKeyDown"
-            />
+            <i class="search-icon bi-search" :class="{ focussed: isFocussed }"></i>
+            <input class="input" type="text" autofocus @focus="onFocus" @blur="onBlur" />
         </div>
     </div>
 </template>
@@ -33,18 +23,6 @@ export default Vue.extend({
 
         onBlur(): void {
             this.isFocussed = false;
-        },
-
-        onKeyDown(keyboardEvent: KeyboardEvent): void {
-            if (keyboardEvent.key === "ArrowDown") {
-                keyboardEvent.preventDefault();
-                console.log("down");
-            }
-
-            if (keyboardEvent.key === "ArrowUp") {
-                keyboardEvent.preventDefault();
-                console.log("up");
-            }
         },
     },
 });

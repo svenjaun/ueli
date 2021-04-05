@@ -4,7 +4,10 @@
             <UserInput />
         </div>
         <div class="search-result-list-container">
-            <SearchResultList />
+            <SearchResultList
+                @executionRequested="onExecutionRequested"
+                @openLocationRequested="onOpenLocationRequested"
+            />
         </div>
     </div>
 </template>
@@ -13,11 +16,50 @@
 import Vue from "vue";
 import UserInput from "@/components/UserInput.vue";
 import SearchResultList from "@/components/SearchResultList.vue";
+import { vueEventEmitter } from "./VueEventEmitter";
+import { VueEvent } from "./VueEvent";
+import { SearchResultItem } from "../common/SearchResultItem";
+import { searchResultItems } from "./SearchResultItems";
 
 export default Vue.extend({
     components: {
         SearchResultList,
         UserInput,
+    },
+
+    methods: {
+        onGlobalKeyDown(keyboardEvent: KeyboardEvent): void {
+            const events = [
+                { key: "ArrowUp", eventName: VueEvent.UserInputArrowKeyPressed, eventData: keyboardEvent.key },
+                { key: "ArrowDown", eventName: VueEvent.UserInputArrowKeyPressed, eventData: keyboardEvent.key },
+                {
+                    key: "Enter",
+                    eventName: VueEvent.UserInputEnterPressed,
+                    eventData: keyboardEvent.ctrlKey || keyboardEvent.metaKey,
+                },
+            ];
+
+            for (const event of events) {
+                if (event.key === keyboardEvent.key) {
+                    keyboardEvent.preventDefault();
+                    vueEventEmitter.$emit(event.eventName, event.eventData);
+                }
+            }
+        },
+
+        onExecutionRequested(searchResultItem: SearchResultItem): void {
+            console.log("execute", searchResultItem);
+        },
+
+        onOpenLocationRequested(searchResultItem: SearchResultItem): void {
+            console.log("open location", searchResultItems);
+        },
+    },
+
+    mounted() {
+        vueEventEmitter.$on(VueEvent.GlobalKeyDown, (keyboardEvent: KeyboardEvent) =>
+            this.onGlobalKeyDown(keyboardEvent)
+        );
     },
 });
 </script>
@@ -46,9 +88,8 @@ export default Vue.extend({
     --ueli-red-dark: #ff3f34;
     --ueli-red-bright: #ff5e57;
 
-    --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-        "Segoe UI Symbol";
+    --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 
     --ueli-font-size-11: 11px;
     --ueli-font-size-13: 13px;

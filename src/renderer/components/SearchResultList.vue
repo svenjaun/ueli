@@ -1,12 +1,15 @@
 <template>
     <div class="container">
-        <SearchResultItem
+        <SearchResult
             v-for="(searchResultItem, index) in searchResultItems"
             :key="index"
             :name="searchResultItem.name"
             :description="searchResultItem.description"
             :icon="searchResultItem.icon"
             :position="index"
+            :hovered="currentlyHoveredPosition === index"
+            @mouseenter="onMouseEnter(index)"
+            @mouseleave="onMouseLeave(index)"
             @execute="execute(searchResultItem)"
             @openLocation="openLocation(searchResultItem)"
         />
@@ -15,27 +18,79 @@
 
 <script lang="ts">
 import Vue from "vue";
-import SearchResultItem from "./SearchResultItem.vue";
+import SearchResult from "./SearchResult.vue";
 import { searchResultItems } from "../SearchResultItems";
-import { SearchResultItem as SearchResultItemInterface } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResultItem";
+import { vueEventEmitter } from "../VueEventEmitter";
+import { VueEvent } from "../VueEvent";
+
+interface Data {
+    currentlyHoveredPosition?: number;
+    searchResultItems: SearchResultItem[];
+}
 
 export default Vue.extend({
-    components: { SearchResultItem },
+    components: { SearchResult },
 
-    data() {
+    data(): Data {
         return {
+            currentlyHoveredPosition: 0,
             searchResultItems,
         };
     },
 
     methods: {
-        execute(searchResultItem: SearchResultItemInterface): void {
-            console.log("Execute", searchResultItem.description);
+        execute(searchResultItem: SearchResultItem): void {
+            this.$emit("executionRequested", searchResultItem);
         },
 
-        openLocation(searchResultItem: SearchResultItemInterface): void {
-            console.log("Open location", searchResultItem.description);
+        openLocation(searchResultItem: SearchResultItem): void {
+            this.$emit("openLocationRequested", searchResultItem);
         },
+
+        currentlySelectedIndexChange(direction: string): void {
+            const minimumIndex = 0;
+            const maximumIndex = this.searchResultItems.length - 1;
+
+            if (this.currentlyHoveredPosition === undefined) {
+                this.currentlyHoveredPosition = 0;
+                return;
+            }
+
+            if (direction === "ArrowUp") {
+                this.currentlyHoveredPosition =
+                    this.currentlyHoveredPosition === minimumIndex ? maximumIndex : this.currentlyHoveredPosition - 1;
+            } else if (direction === "ArrowDown") {
+                this.currentlyHoveredPosition =
+                    this.currentlyHoveredPosition === maximumIndex ? minimumIndex : this.currentlyHoveredPosition + 1;
+            }
+        },
+
+        onMouseEnter(position: number): void {
+            this.currentlyHoveredPosition = position;
+        },
+
+        onMouseLeave(position: number): void {
+            if (this.currentlyHoveredPosition === position) {
+                this.currentlyHoveredPosition = undefined;
+            }
+        },
+    },
+
+    mounted(): void {
+        vueEventEmitter.$on(VueEvent.UserInputArrowKeyPressed, (key: string) => {
+            this.currentlySelectedIndexChange(key);
+        });
+
+        vueEventEmitter.$on(VueEvent.UserInputEnterPressed, (ctrlOrMetaPressed: boolean) => {
+            const currentlySelectedItem = this.searchResultItems.find(
+                (searchResultItem, index) => index === this.currentlyHoveredPosition
+            );
+
+            if (currentlySelectedItem) {
+                ctrlOrMetaPressed ? this.openLocation(currentlySelectedItem) : this.execute(currentlySelectedItem);
+            }
+        });
     },
 });
 </script>

@@ -1,10 +1,18 @@
 <template>
-    <div class="container" @click="onClick">
+    <div
+        class="container"
+        :class="{ hovered: hovered }"
+        @click="onClick"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+    >
         <div class="icon-container">
             <img class="icon" :src="iconUrl" />
         </div>
         <div class="info-container">
-            <div class="name">{{ name }}</div>
+            <div class="name">
+                {{ name }}
+            </div>
             <div class="description">
                 {{ description }}
             </div>
@@ -35,6 +43,11 @@ export default Vue.extend({
             type: String,
             required: true,
         },
+
+        hovered: {
+            type: Boolean,
+            required: true,
+        },
     },
 
     computed: {
@@ -45,11 +58,19 @@ export default Vue.extend({
 
     methods: {
         onClick(mouseEvent: MouseEvent): void {
-            if (mouseEvent.shiftKey) {
+            if (mouseEvent.ctrlKey || mouseEvent.metaKey) {
                 this.$emit("openLocation");
             } else {
                 this.$emit("execute");
             }
+        },
+
+        onMouseEnter(): void {
+            this.$emit("mouseenter");
+        },
+
+        onMouseLeave(): void {
+            this.$emit("mouseleave");
         },
     },
 });
@@ -68,7 +89,7 @@ export default Vue.extend({
     user-select: none;
 }
 
-.container:hover {
+.container.hovered {
     background-color: rgba(255, 255, 255, 0.05);
     opacity: 1;
 }
