@@ -5,17 +5,21 @@ import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetriever
 
 export class Application {
     public static fromWindowsAppRetriever(app: WindowsApplicationRetrieverResult): Application {
-        return new Application(app.BaseName, app.FullName);
+        return new Application(app.BaseName, app.FullName, app.IconFilePath);
     }
 
-    private constructor(public readonly name: string, public readonly filePath: string) {}
+    private constructor(
+        public readonly name: string,
+        public readonly filePath: string,
+        public readonly iconFilePath: string
+    ) {}
 
     public toSearchResultItem(): SearchResultItem {
         return {
             description: this.filePath,
             executionArgument: this.filePath,
             executorId: FilePathExecutor.executorId,
-            icon: "https://img.icons8.com/color/2x/desktop-mac.png",
+            icon: this.iconFilePath,
             locationOpenerId: FilePathLocationOpener.locationOpenerId,
             name: this.name,
             openLocationArgument: this.filePath,

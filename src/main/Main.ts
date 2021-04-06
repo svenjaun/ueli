@@ -20,7 +20,7 @@ const applicationSearchPreferences: ApplicationSearchPreferences = {
         "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
         "C:\\Users\\Oliver\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu",
     ],
-    fileExtensions: ["lnk", "url"],
+    fileExtensions: ["lnk"],
 };
 
 const executePowershellScript = (powershellScript: string): Promise<string> =>

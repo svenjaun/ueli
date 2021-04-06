@@ -3,4 +3,5 @@ export interface WindowsApplicationRetrieverResult {
     FullName: string;
     Extension: string;
     BaseName: string;
+    IconFilePath: string;
 }
