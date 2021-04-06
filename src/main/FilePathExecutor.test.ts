@@ -1,23 +1,18 @@
-import { SearchResultItem } from "../common/SearchResultItem";
 import { FilePathExecutor } from "./FilePathExecutor";
+import { SearchResultItemDummy } from "./SearchResultItemDummy";
 
 describe(FilePathExecutor, () => {
-    const searchResultItem: SearchResultItem = {
-        description: "",
-        executionArgument: "",
-        executorId: "",
-        icon: "",
-        locationOpenerId: "",
-        name: "",
-        openLocationArgument: "",
-    };
+    it("should succeed if the file path opener resolves", async (done) => {
+        new FilePathExecutor(() => Promise.resolve())
+            .execute(SearchResultItemDummy.empty())
+            .then(() => done())
+            .catch((error) => done(error));
+    });
 
-    it("should do things", () => {
-        const filePathOpener = jest.fn(() => Promise.resolve());
-        const filePathExecutor = new FilePathExecutor(filePathOpener);
-
-        filePathExecutor.execute(searchResultItem);
-
-        expect(filePathOpener.mock.calls.length).toBe(1);
+    it("should fail if the file path opener rejects", async (done) => {
+        new FilePathExecutor(() => Promise.reject("Failed"))
+            .execute(SearchResultItemDummy.empty())
+            .then(() => done("Should have failed"))
+            .catch(() => done());
     });
 });

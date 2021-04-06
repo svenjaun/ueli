@@ -4,7 +4,7 @@ import { IpcChannel } from "../common/IpcChannel";
 import { OperatingSystem } from "../common/OperatingSystem";
 import { SearchResultItem } from "../common/SearchResultItem";
 import { ExecutionService } from "./ExecutionService";
-import { OpenLocationService } from "./OpenLocationService";
+import { LocationOpeningService } from "./LocationOpeningService";
 import { SearchEngine } from "./SearchEngine";
 import { WindowManager } from "./WindowManager";
 
@@ -17,7 +17,7 @@ export class MainApplication {
         private readonly operatingSystem: OperatingSystem,
         private readonly searchEngine: SearchEngine,
         private readonly executionService: ExecutionService,
-        private readonly openLocationService: OpenLocationService
+        private readonly locationOpeningService: LocationOpeningService
     ) {}
 
     public start(): void {
@@ -98,7 +98,7 @@ export class MainApplication {
 
                 this.hideWindow();
 
-                return this.openLocationService.openLocation(args[0]);
+                return this.locationOpeningService.openLocation(args[0]);
             }
         );
 

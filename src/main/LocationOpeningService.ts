@@ -1,7 +1,7 @@
 import { SearchResultItem } from "../common/SearchResultItem";
 import { LocationOpener } from "./LocationOpener";
 
-export class OpenLocationService {
+export class LocationOpeningService {
     public constructor(private readonly locationOpeners: LocationOpener[]) {}
 
     public openLocation(searchResultItem: SearchResultItem): Promise<void> {

@@ -5,7 +5,7 @@ import { ExecutionService } from "./ExecutionService";
 import { FilePathExecutor } from "./FilePathExecutor";
 import { FilePathLocationOpener } from "./FilePathLocationOpener";
 import { MainApplication } from "./MainApplication";
-import { OpenLocationService } from "./OpenLocationService";
+import { LocationOpeningService } from "./LocationOpeningService";
 import { SearchEngine } from "./SearchEngine";
 import { searchResultItems } from "./SearchResultItems";
 import { WindowManager } from "./WindowManager";
@@ -25,7 +25,18 @@ const executionService = new ExecutionService([
     }),
 ]);
 
-const openLocationService = new OpenLocationService([new FilePathLocationOpener(shell)]);
+const locationOpeningService = new LocationOpeningService([
+    new FilePathLocationOpener((filePath: string) => {
+        return new Promise((resolve, reject) => {
+            try {
+                shell.showItemInFolder(filePath);
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }),
+]);
 
 new MainApplication(
     app,
@@ -35,5 +46,5 @@ new MainApplication(
     operatingSystem,
     searchEngine,
     executionService,
-    openLocationService
+    locationOpeningService
 ).start();
