@@ -7,36 +7,51 @@ import { FilePathLocationOpener } from "./FilePathLocationOpener";
 import { MainApplication } from "./MainApplication";
 import { LocationOpeningService } from "./LocationOpeningService";
 import { SearchEngine } from "./SearchEngine";
-import { searchResultItems } from "./SearchResultItems";
 import { WindowManager } from "./WindowManager";
+import { WindowsApplicationsRetriever } from "./WindowsApplicationsRetriever";
+import { PowershellUtility } from "./PowershellUtility";
+import { ApplicationSearchPreferences } from "./ApplicationSearchPreferences";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 const windowManager = new WindowManager();
-const searchEngine = new SearchEngine(searchResultItems);
 
-const executionService = new ExecutionService([
-    new FilePathExecutor((filePath: string) => {
-        return new Promise((resolve, reject) => {
-            shell
-                .openPath(filePath)
-                .then((result) => (result.length === 0 ? resolve() : reject(result)))
-                .catch((error) => reject(error));
-        });
-    }),
-]);
+const applicationSearchPreferences: ApplicationSearchPreferences = {
+    folderPaths: [
+        "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
+        "C:\\Users\\Oliver\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu",
+    ],
+    fileExtensions: ["lnk", "url"],
+};
 
-const locationOpeningService = new LocationOpeningService([
-    new FilePathLocationOpener((filePath: string) => {
-        return new Promise((resolve, reject) => {
-            try {
-                shell.showItemInFolder(filePath);
-                resolve();
-            } catch (error) {
-                reject(error);
-            }
-        });
-    }),
-]);
+const executePowershellScript = (powershellScript: string): Promise<string> =>
+    PowershellUtility.executePowershellScript(powershellScript);
+
+const searchEngine = new SearchEngine(
+    new WindowsApplicationsRetriever(executePowershellScript, applicationSearchPreferences)
+);
+
+const openFilePath = (filePath: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        shell
+            .openPath(filePath)
+            .then((result) => (result.length === 0 ? resolve() : reject(result)))
+            .catch((error) => reject(error));
+    });
+};
+
+const openFileLocation = (filePath: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        try {
+            shell.showItemInFolder(filePath);
+            resolve();
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+const executionService = new ExecutionService([new FilePathExecutor(openFilePath)]);
+const locationOpeningService = new LocationOpeningService([new FilePathLocationOpener(openFileLocation)]);
 
 new MainApplication(
     app,

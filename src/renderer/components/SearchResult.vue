@@ -7,7 +7,7 @@
         @mouseleave="onMouseLeave"
     >
         <div class="icon-container">
-            <img class="icon" :src="iconUrl" />
+            <img class="icon" :src="icon" />
         </div>
         <div class="info-container">
             <div class="name">
@@ -47,12 +47,6 @@ export default Vue.extend({
         hovered: {
             type: Boolean,
             required: true,
-        },
-    },
-
-    computed: {
-        iconUrl(): string {
-            return `file:///C:\\Users\\Oliver\\Downloads\\test-icons\\${this.icon}.svg`;
         },
     },
 
