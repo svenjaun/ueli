@@ -1,12 +1,12 @@
 import * as Powershell from "node-powershell";
 
 export class PowershellUtility {
-    public static executePowershellScript(powershellScript: string): Promise<string> {
+    public static executePowershellScript(
+        powershellScript: string,
+        shellOptions: Powershell.ShellOptions = { noProfile: true, executionPolicy: "Bypass" }
+    ): Promise<string> {
         return new Promise((resolve, reject) => {
-            const powershell = new Powershell({
-                executionPolicy: "Bypass",
-                noProfile: true,
-            });
+            const powershell = new Powershell(shellOptions);
 
             powershell
                 .addCommand(powershellScript)
