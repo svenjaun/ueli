@@ -19,7 +19,7 @@ export class WindowsApplicationsRetriever {
                 .join(",");
 
             this.executePowershellScript(
-                `Get-ChildItem -File -Path ${folderPathFilter} -Recurse -Include ${fileExtensionFilter} | Select-Object -Property Name, FullName, Extension, BaseName | ConvertTo-Json`
+                `Get-ChildItem -File -Path ${folderPathFilter} -Recurse -Include ${fileExtensionFilter} | Select-Object -Property Name, FullName, Extension, BaseName | ConvertTo-Json -Compress`
             )
                 .then((stdout) => {
                     const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
