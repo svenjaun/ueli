@@ -15,8 +15,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import UserInput from "@/components/UserInput.vue";
-import SearchResultList from "@/components/SearchResultList.vue";
+import UserInput from "@/Components/UserInput.vue";
+import SearchResultList from "@/Components/SearchResultList.vue";
 import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
 import { SearchResultItem } from "../common/SearchResultItem";
