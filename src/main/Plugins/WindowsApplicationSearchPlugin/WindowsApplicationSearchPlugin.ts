@@ -31,7 +31,7 @@ export class WindowsApplicationSearchPlugin implements SearchPlugin {
                         
                 Add-Type -AssemblyName System.Drawing
                         
-                $Utf8 = new-object -TypeName System.Text.UTF8Encoding
+                $Utf8 = New-Object -TypeName System.Text.UTF8Encoding
                         
                 $Files = Get-ChildItem -File -Path $FolderPaths -Recurse -Include $FileExtensions | Select-Object -Property Name, FullName, Extension, BaseName
                         
