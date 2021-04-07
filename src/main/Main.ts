@@ -8,9 +8,9 @@ import { MainApplication } from "./MainApplication";
 import { LocationOpeningService } from "./LocationOpeningService";
 import { SearchEngine } from "./SearchEngine";
 import { WindowManager } from "./WindowManager";
-import { WindowsApplicationsRetriever } from "./WindowsApplicationsRetriever";
 import { PowershellUtility } from "./PowershellUtility";
-import { ApplicationSearchPreferences } from "./ApplicationSearchPreferences";
+import { ApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/ApplicationSearchPreferences";
+import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 const windowManager = new WindowManager();
@@ -26,9 +26,9 @@ const applicationSearchPreferences: ApplicationSearchPreferences = {
 const executePowershellScript = (powershellScript: string): Promise<string> =>
     PowershellUtility.executePowershellScript(powershellScript);
 
-const searchEngine = new SearchEngine(
-    new WindowsApplicationsRetriever(executePowershellScript, applicationSearchPreferences)
-);
+const searchEngine = new SearchEngine([
+    new WindowsApplicationSearchPlugin(executePowershellScript, applicationSearchPreferences),
+]);
 
 const openFilePath = (filePath: string): Promise<void> => {
     return new Promise((resolve, reject) => {

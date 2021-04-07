@@ -1,25 +1,27 @@
+import { SearchResultItem } from "../../../common/SearchResultItem";
 import { Application } from "./Application";
 import { ApplicationSearchPreferences } from "./ApplicationSearchPreferences";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
+import { SearchPlugin } from "../SearchPlugin";
 
-export class WindowsApplicationsRetriever {
+export class WindowsApplicationSearchPlugin implements SearchPlugin {
     public constructor(
         private readonly executePowershellScript: (powershellScript: string) => Promise<string>,
         private readonly applicationSearchPreferences: ApplicationSearchPreferences
     ) {}
 
-    public async getApps(): Promise<Application[]> {
-        const folderPathFilter = this.applicationSearchPreferences.folderPaths
-            .map((folderPath) => `'${folderPath}'`)
-            .join(",");
+    public async getAllItems(): Promise<SearchResultItem[]> {
+        return (await this.getApplications()).map((application) => application.toSearchResultItem());
+    }
 
-        const fileExtensionFilter = this.applicationSearchPreferences.fileExtensions
-            .map((fileExtension) => `'*.${fileExtension}'`)
-            .join(",");
+    private async getApplications(): Promise<Application[]> {
+        const stdout = await this.executePowershellScript(this.getPowershellScript());
+        const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
+        return apps.map((app) => Application.fromWindowsAppRetriever(app));
+    }
 
-        const appIconFolder = "C:\\Users\\Oliver\\AppData\\Roaming\\ueli\\appicons";
-
-        const powershellScript = `
+    private getPowershellScript(): string {
+        return `
             function Get-WindowsApps {
                 param(
                     [string[]]$FolderPaths,
@@ -52,12 +54,21 @@ export class WindowsApplicationsRetriever {
                 $Files | ConvertTo-Json
             }
             
-            Get-WindowsApps -FolderPaths ${folderPathFilter} -FileExtensions ${fileExtensionFilter} -AppIconFolder ${appIconFolder}
+            Get-WindowsApps -FolderPaths ${this.getFolderPathFilter()} -FileExtensions ${this.getFileExtensionFilter()} -AppIconFolder ${this.getAppIconFolder()}
         `;
+    }
 
-        const stdout = await this.executePowershellScript(powershellScript);
+    private getFolderPathFilter(): string {
+        return this.applicationSearchPreferences.folderPaths.map((folderPath) => `'${folderPath}'`).join(",");
+    }
 
-        const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
-        return apps.map((app) => Application.fromWindowsAppRetriever(app));
+    private getFileExtensionFilter(): string {
+        return this.applicationSearchPreferences.fileExtensions
+            .map((fileExtension) => `'*.${fileExtension}'`)
+            .join(",");
+    }
+
+    private getAppIconFolder(): string {
+        return "C:\\Users\\Oliver\\AppData\\Roaming\\ueli\\appicons";
     }
 }

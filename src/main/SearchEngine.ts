@@ -1,12 +1,15 @@
 import { SearchResultItem } from "../common/SearchResultItem";
-import { WindowsApplicationsRetriever } from "./WindowsApplicationsRetriever";
+import { SearchPlugin } from "./Plugins/SearchPlugin";
 
 export class SearchEngine {
     private searchResultItems: SearchResultItem[];
 
-    constructor(private readonly windowsApplicationRetriever: WindowsApplicationsRetriever) {
+    constructor(private readonly searchPlugins: SearchPlugin[]) {
         this.searchResultItems = [];
-        this.updateSearchResultItems();
+
+        this.getUpdatedSearchResultItems()
+            .then((updatedSearchResultItems) => (this.searchResultItems = updatedSearchResultItems))
+            .catch((error) => console.log(`Failed to update search result items. Reason: ${error}`));
     }
 
     public search(searchTerm: string): Promise<SearchResultItem[]> {
@@ -21,10 +24,19 @@ export class SearchEngine {
         );
     }
 
-    private updateSearchResultItems(): void {
-        this.windowsApplicationRetriever
-            .getApps()
-            .then((apps) => (this.searchResultItems = apps.map((app) => app.toSearchResultItem())))
-            .catch((error) => console.log(error));
+    private getUpdatedSearchResultItems(): Promise<SearchResultItem[]> {
+        return new Promise((resolve, reject) => {
+            Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.getAllItems()))
+                .then((searchResultItemsList) => {
+                    let searchResultItems: SearchResultItem[] = [];
+
+                    searchResultItemsList.forEach((searchResultItemList) => {
+                        searchResultItems = searchResultItems.concat(searchResultItemList);
+                    });
+
+                    resolve(searchResultItems);
+                })
+                .catch((error) => reject(error));
+        });
     }
 }

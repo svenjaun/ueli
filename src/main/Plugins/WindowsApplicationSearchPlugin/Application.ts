@@ -1,6 +1,6 @@
-import { SearchResultItem } from "../common/SearchResultItem";
-import { FilePathExecutor } from "./FilePathExecutor";
-import { FilePathLocationOpener } from "./FilePathLocationOpener";
+import { SearchResultItem } from "../../../common/SearchResultItem";
+import { FilePathExecutor } from "../../FilePathExecutor";
+import { FilePathLocationOpener } from "../../FilePathLocationOpener";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 
 export class Application {
