@@ -14,8 +14,14 @@ export class SearchResultItemDummy {
     }
 
     public static withExecutorId(executorId: string): SearchResultItem {
-        const empty = this.empty();
+        const empty = SearchResultItemDummy.empty();
         empty.executorId = executorId;
+        return empty;
+    }
+
+    public static withLocationOpenerId(locationOpenerId: string): SearchResultItem {
+        const empty = SearchResultItemDummy.empty();
+        empty.locationOpenerId = locationOpenerId;
         return empty;
     }
 }

@@ -9,10 +9,10 @@ export class LocationOpeningService {
             (locationOpener) => locationOpener.locationOpenerId === searchResultItem.locationOpenerId
         );
 
-        if (opener) {
-            return opener.openLocation(searchResultItem);
-        }
-
-        throw new Error("Unable to open location for item. Reason: no file location opener found.");
+        return opener
+            ? opener.openLocation(searchResultItem)
+            : Promise.reject(
+                  `Unable to open location for "${searchResultItem.locationOpenerId}". Reason: no location opener found.`
+              );
     }
 }
