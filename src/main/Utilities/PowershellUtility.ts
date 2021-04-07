@@ -17,9 +17,7 @@ export class PowershellUtility {
                         .catch((error) => reject(`Powershell script execution failed. Reason: ${error}`))
                         .finally(() => powershell.dispose());
                 })
-                .catch((error) => {
-                    reject(`Failed to add powershell command. Reason: ${error}`);
-                });
+                .catch((error) => reject(`Failed to add powershell command. Reason: ${error}`));
         });
     }
 }
