@@ -9,6 +9,6 @@ export class ExecutionService {
 
         return executor
             ? executor.execute(searchResultItem)
-            : Promise.reject("Can't execute search result item. Reason: no executor found which can handle the item.");
+            : Promise.reject(`Can't execute "${searchResultItem.executionArgument}". Reason: no executor found.`);
     }
 }
