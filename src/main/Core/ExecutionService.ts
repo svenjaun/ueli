@@ -1,5 +1,5 @@
-import { SearchResultItem } from "../common/SearchResultItem";
-import { Executor } from "./Executor";
+import { SearchResultItem } from "../../common/SearchResultItem";
+import { Executor } from "../Executors/Executor";
 
 export class ExecutionService {
     constructor(private readonly executors: Executor[]) {}

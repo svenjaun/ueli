@@ -1,12 +1,12 @@
 import { app, globalShortcut, ipcMain, shell } from "electron";
 import { platform } from "os";
 import { OperatingSystemHelper } from "../common/OperatingSystemHelper";
-import { ExecutionService } from "./ExecutionService";
-import { FilePathExecutor } from "./FilePathExecutor";
-import { FilePathLocationOpener } from "./FilePathLocationOpener";
+import { ExecutionService } from "./Core/ExecutionService";
+import { FilePathExecutor } from "./Executors/FilePathExecutor";
+import { FilePathLocationOpener } from "./LocationOpeners/FilePathLocationOpener";
 import { MainApplication } from "./MainApplication";
-import { LocationOpeningService } from "./LocationOpeningService";
-import { SearchEngine } from "./SearchEngine";
+import { LocationOpeningService } from "./Core/LocationOpeningService";
+import { SearchEngine } from "./Core/SearchEngine";
 import { WindowManager } from "./WindowManager";
 import { PowershellUtility } from "./Utilities/PowershellUtility";
 import { ApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/ApplicationSearchPreferences";

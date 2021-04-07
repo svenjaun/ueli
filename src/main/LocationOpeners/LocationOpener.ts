@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResultItem";
 
 export abstract class LocationOpener {
     protected constructor(public readonly locationOpenerId: string) {}

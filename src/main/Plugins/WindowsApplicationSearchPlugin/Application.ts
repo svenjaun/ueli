@@ -1,6 +1,5 @@
 import { SearchResultItem } from "../../../common/SearchResultItem";
-import { FilePathExecutor } from "../../FilePathExecutor";
-import { FilePathLocationOpener } from "../../FilePathLocationOpener";
+import { FilePathLocationOpener } from "../../LocationOpeners/FilePathLocationOpener";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 
 export class Application {
@@ -18,7 +17,7 @@ export class Application {
         return {
             description: this.filePath,
             executionArgument: this.filePath,
-            executorId: FilePathExecutor.executorId,
+            executorId: "FilePathExecutor",
             icon: this.iconFilePath,
             locationOpenerId: FilePathLocationOpener.locationOpenerId,
             name: this.name,

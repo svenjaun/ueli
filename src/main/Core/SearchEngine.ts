@@ -1,5 +1,5 @@
-import { SearchResultItem } from "../common/SearchResultItem";
-import { SearchPlugin } from "./Plugins/SearchPlugin";
+import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchPlugin } from "../Plugins/SearchPlugin";
 
 export class SearchEngine {
     private searchResultItems: SearchResultItem[];

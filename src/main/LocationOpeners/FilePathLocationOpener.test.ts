@@ -1,5 +1,5 @@
 import { FilePathLocationOpener } from "./FilePathLocationOpener";
-import { SearchResultItemDummy } from "./SearchResultItemDummy";
+import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
 
 describe(FilePathLocationOpener, () => {
     it("should succeed if the file path location opener resolves", (done) => {

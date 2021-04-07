@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../common/SearchResultItem";
+import { SearchResultItem } from "./SearchResultItem";
 
 export class SearchResultItemDummy {
     public static empty(): SearchResultItem {

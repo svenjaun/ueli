@@ -1,5 +1,5 @@
-import { SearchResultItem } from "../common/SearchResultItem";
-import { LocationOpener } from "./LocationOpener";
+import { SearchResultItem } from "../../common/SearchResultItem";
+import { LocationOpener } from "../LocationOpeners/LocationOpener";
 
 export class LocationOpeningService {
     public constructor(private readonly locationOpeners: LocationOpener[]) {}

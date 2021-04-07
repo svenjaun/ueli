@@ -3,9 +3,9 @@ import { IpcMainInvokeEvent } from "electron/main";
 import { IpcChannel } from "../common/IpcChannel";
 import { OperatingSystem } from "../common/OperatingSystem";
 import { SearchResultItem } from "../common/SearchResultItem";
-import { ExecutionService } from "./ExecutionService";
-import { LocationOpeningService } from "./LocationOpeningService";
-import { SearchEngine } from "./SearchEngine";
+import { ExecutionService } from "./Core/ExecutionService";
+import { LocationOpeningService } from "./Core/LocationOpeningService";
+import { SearchEngine } from "./Core/SearchEngine";
 import { WindowManager } from "./WindowManager";
 
 export class MainApplication {
