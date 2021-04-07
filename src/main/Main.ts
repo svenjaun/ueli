@@ -8,7 +8,7 @@ import { MainApplication } from "./MainApplication";
 import { LocationOpeningService } from "./LocationOpeningService";
 import { SearchEngine } from "./SearchEngine";
 import { WindowManager } from "./WindowManager";
-import { PowershellUtility } from "./PowershellUtility";
+import { PowershellUtility } from "./Utilities/PowershellUtility";
 import { ApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/ApplicationSearchPreferences";
 import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
 
