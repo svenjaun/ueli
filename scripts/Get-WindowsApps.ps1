@@ -20,7 +20,16 @@ function Get-WindowsApps {
         $IconAlreadyExists = Test-Path -LiteralPath $File.IconFilePath
 
         if (!$IconAlreadyExists) {
-            $Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($File.FullName);
+            $FilePathToExtractIcon = $File.FullName
+
+            if ($File.Extension -eq ".lnk") {
+                $ExtractedShortcut = Extract-Shortcut -ShortcutFilePath $File.FullName
+                if ($ExtractedShortcut) {
+                    $FilePathToExtractIcon = $ExtractedShortcut
+                }
+            }
+
+            $Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($FilePathToExtractIcon);
             if ($Icon -ne $null) {
                 $Icon.ToBitmap().Save($File.IconFilePath, [System.Drawing.Imaging.ImageFormat]::Png)
             }
