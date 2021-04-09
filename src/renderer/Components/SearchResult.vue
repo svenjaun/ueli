@@ -5,6 +5,7 @@
         @click="onClick"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
+        :id="elementId"
     >
         <div class="icon-container">
             <img class="icon" :src="icon" />
@@ -47,6 +48,12 @@ export default Vue.extend({
         hovered: {
             type: Boolean,
             required: true,
+        },
+    },
+
+    computed: {
+        elementId(): string {
+            return `search-result-position-${this.position}`;
         },
     },
 

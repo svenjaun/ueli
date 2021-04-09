@@ -3,7 +3,7 @@
         <div class="user-input-container">
             <UserInput @searchTermChanged="onSearchTermChanged" />
         </div>
-        <div class="search-result-list-container">
+        <div class="search-result-list-container" id="search-result-list-container">
             <SearchResultList
                 :searchResultItems="searchResultItems"
                 @executionRequested="onExecutionRequested"

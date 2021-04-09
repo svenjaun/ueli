@@ -52,7 +52,7 @@ export default Vue.extend({
             this.$emit("openLocationRequested", searchResultItem);
         },
 
-        currentlySelectedIndexChange(direction: string): void {
+        currentlySelectedIndexChange(direction: "ArrowUp" | "ArrowDown"): void {
             const minimumIndex = 0;
             const maximumIndex = this.searchResultItems.length - 1;
 
@@ -64,10 +64,42 @@ export default Vue.extend({
             if (direction === "ArrowUp") {
                 this.currentlyHoveredPosition =
                     this.currentlyHoveredPosition === minimumIndex ? maximumIndex : this.currentlyHoveredPosition - 1;
-            } else if (direction === "ArrowDown") {
+            }
+
+            if (direction === "ArrowDown") {
                 this.currentlyHoveredPosition =
                     this.currentlyHoveredPosition === maximumIndex ? minimumIndex : this.currentlyHoveredPosition + 1;
             }
+
+            this.scrollElementIntoViewIfNecessary();
+        },
+
+        scrollElementIntoViewIfNecessary(): void {
+            const searchResultListContainer = document.getElementById("search-result-list-container") as
+                | HTMLDivElement
+                | undefined;
+
+            const currentlySelectedElement = document.getElementById(
+                `search-result-position-${this.currentlyHoveredPosition}`
+            ) as HTMLDivElement | undefined;
+
+            if (searchResultListContainer && currentlySelectedElement) {
+                if (this.elementIsOutOfView(searchResultListContainer, currentlySelectedElement)) {
+                    currentlySelectedElement.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        },
+
+        elementIsOutOfView(container: HTMLDivElement, element: HTMLDivElement): boolean {
+            const scrolledFromTop = container.scrollTop;
+            const scrollContainerHeight = container.clientHeight;
+            const elementOffsetTop = element.offsetTop - container.offsetTop;
+            const elementHeight = element.clientHeight;
+
+            return (
+                scrolledFromTop + scrollContainerHeight <= elementOffsetTop + elementHeight ||
+                elementOffsetTop <= scrolledFromTop
+            );
         },
 
         onMouseEnter(position: number): void {
@@ -82,7 +114,7 @@ export default Vue.extend({
     },
 
     mounted(): void {
-        vueEventEmitter.$on(VueEvent.UserInputArrowKeyPressed, (key: string) => {
+        vueEventEmitter.$on(VueEvent.UserInputArrowKeyPressed, (key: "ArrowUp" | "ArrowDown") => {
             this.currentlySelectedIndexChange(key);
         });
 
