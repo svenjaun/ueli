@@ -3,6 +3,7 @@ import { IpcMainInvokeEvent } from "electron/main";
 import { IpcChannel } from "../common/IpcChannel";
 import { OperatingSystem } from "../common/OperatingSystem";
 import { SearchResultItem } from "../common/SearchResultItem";
+import { CommandlineSwitchConfiguration } from "./CommandlineSwitchConfiguration";
 import { ExecutionService } from "./Core/ExecutionService";
 import { LocationOpeningService } from "./Core/LocationOpeningService";
 import { SearchEngine } from "./Core/SearchEngine";
@@ -39,15 +40,23 @@ export class MainApplication {
     }
 
     private appendCommandlineSwitches(): void {
-        const commandlineSwitches: string[] = [];
+        const commandlineSwitchConfigurations: CommandlineSwitchConfiguration[] = [
+            {
+                operatingSystem: OperatingSystem.Windows,
+                commandlineSwitches: ["wm-window-animations-disabled"],
+            },
+        ];
 
-        if (this.operatingSystem === OperatingSystem.Windows) {
-            commandlineSwitches.push("wm-window-animations-disabled");
-        }
-
-        commandlineSwitches.forEach((commandlineSwitch) =>
-            this.electronApp.commandLine.appendSwitch(commandlineSwitch)
-        );
+        commandlineSwitchConfigurations.forEach((commandlineSwitchConfiguration) => {
+            if (
+                commandlineSwitchConfiguration.operatingSystem === this.operatingSystem ||
+                commandlineSwitchConfiguration.operatingSystem === undefined
+            ) {
+                commandlineSwitchConfiguration.commandlineSwitches.forEach((commandlineSwitch) => {
+                    this.electronApp.commandLine.appendSwitch(commandlineSwitch);
+                });
+            }
+        });
     }
 
     private createBrowserWindow(): void {
