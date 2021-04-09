@@ -1,7 +1,7 @@
 <template>
     <div class="outer-container">
         <div class="inner-container" :class="{ focussed: isFocussed }">
-            <i class="search-icon bi-search" :class="{ focussed: isFocussed }"></i>
+            <i class="search-icon bi-search"></i>
             <input
                 ref="userInput"
                 class="input"
@@ -80,17 +80,13 @@ export default Vue.extend({
 }
 
 .inner-container.focussed {
-    border-bottom: 2px solid var(--ueli-blue-bright);
+    border-bottom: 2px solid var(--ueli-blue);
 }
 
 .search-icon {
-    color: var(--ueli-black-20);
+    color: var(--ueli-white);
     font-size: var(--ueli-font-size-16);
     transition: var(--ueli-transition);
-}
-
-.search-icon.focussed {
-    color: var(--ueli-white);
 }
 
 .input {

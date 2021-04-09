@@ -105,17 +105,10 @@ export default Vue.extend({
 
 <style>
 :root {
-    --ueli-black: #2f3640;
-    --ueli-black-10: #353b48;
-    --ueli-black-20: #718093;
-    --ueli-black-40: #7f8fa6;
-
+    --ueli-black: #363639;
+    --ueli-black-10: #51514f;
     --ueli-white: #fff;
-    --ueli-white-05: #f5f6fa;
-    --ueli-white-10: #dcdde1;
-
-    --ueli-blue-dark: #0097e6;
-    --ueli-blue-bright: #00a8ff;
+    --ueli-blue: #429ce3;
 
     --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -146,7 +139,7 @@ body {
     height: 100%;
 
     background-color: var(--ueli-black);
-    color: var(--ueli-white-05);
+    color: var(--ueli-white);
     font-family: var(--ueli-font-family);
 }
 </style>

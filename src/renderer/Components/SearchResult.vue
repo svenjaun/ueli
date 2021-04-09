@@ -137,6 +137,5 @@ export default Vue.extend({
 .description {
     font-size: var(--ueli-font-size-11);
     font-weight: var(--ueli-font-weight-400);
-    color: var(--ueli-white-10);
 }
 </style>
