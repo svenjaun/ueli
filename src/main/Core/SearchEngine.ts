@@ -3,13 +3,11 @@ import { SearchPlugin } from "../Plugins/SearchPlugin";
 
 export class SearchEngine {
     private searchResultItems: SearchResultItem[];
+    private readonly rescanIntervalInSeconds = 60;
 
     constructor(private readonly searchPlugins: SearchPlugin[]) {
         this.searchResultItems = [];
-
-        this.getUpdatedSearchResultItems()
-            .then((updatedSearchResultItems) => (this.searchResultItems = updatedSearchResultItems))
-            .catch((error) => console.log(`Failed to update search result items. Reason: ${error}`));
+        this.rescan();
     }
 
     public search(searchTerm: string): Promise<SearchResultItem[]> {
@@ -24,14 +22,23 @@ export class SearchEngine {
         );
     }
 
-    private getUpdatedSearchResultItems(): Promise<SearchResultItem[]> {
+    private rescan(): void {
+        this.getSearchResultItems()
+            .then((searchResultItems) => (this.searchResultItems = searchResultItems))
+            .catch((error) => console.error(`Search engine rescan failed. Reason: ${error}`))
+            .finally(() => setTimeout(() => this.rescan(), this.rescanIntervalInSeconds * 1000));
+    }
+
+    private getSearchResultItems(): Promise<SearchResultItem[]> {
         return new Promise((resolve, reject) => {
             Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.getAllItems()))
-                .then((searchResultItemsList) => {
+                .then((searchablesList) => {
                     let searchResultItems: SearchResultItem[] = [];
 
-                    searchResultItemsList.forEach((searchResultItemList) => {
-                        searchResultItems = searchResultItems.concat(searchResultItemList);
+                    searchablesList.forEach((searchables) => {
+                        searchResultItems = searchResultItems.concat(
+                            searchables.map((searchable) => searchable.toSearchResultItem())
+                        );
                     });
 
                     resolve(searchResultItems);

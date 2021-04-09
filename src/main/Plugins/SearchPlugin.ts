@@ -1,5 +1,5 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { Searchable } from "../Core/Searchable";
 
 export interface SearchPlugin {
-    getAllItems(): Promise<SearchResultItem[]>;
+    getAllItems(): Promise<Searchable[]>;
 }

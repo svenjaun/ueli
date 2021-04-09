@@ -1,8 +1,8 @@
-import { SearchResultItem } from "../../../common/SearchResultItem";
 import { Application } from "./Application";
 import { ApplicationSearchPreferences } from "./ApplicationSearchPreferences";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 import { SearchPlugin } from "../SearchPlugin";
+import { Searchable } from "../../Core/Searchable";
 
 export class WindowsApplicationSearchPlugin implements SearchPlugin {
     public constructor(
@@ -10,11 +10,7 @@ export class WindowsApplicationSearchPlugin implements SearchPlugin {
         private readonly applicationSearchPreferences: ApplicationSearchPreferences
     ) {}
 
-    public async getAllItems(): Promise<SearchResultItem[]> {
-        return (await this.getApplications()).map((application) => application.toSearchResultItem());
-    }
-
-    private async getApplications(): Promise<Application[]> {
+    public async getAllItems(): Promise<Searchable[]> {
         const stdout = await this.executePowershellScript(this.getPowershellScript());
         const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
         return apps.map((app) => Application.fromWindowsAppRetriever(app));

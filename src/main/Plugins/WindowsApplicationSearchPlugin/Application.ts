@@ -1,8 +1,9 @@
 import { SearchResultItem } from "../../../common/SearchResultItem";
+import { Searchable } from "../../Core/Searchable";
 import { FilePathLocationOpener } from "../../LocationOpeners/FilePathLocationOpener";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 
-export class Application {
+export class Application implements Searchable {
     public static fromWindowsAppRetriever(app: WindowsApplicationRetrieverResult): Application {
         return new Application(app.BaseName, app.FullName, app.IconFilePath);
     }
