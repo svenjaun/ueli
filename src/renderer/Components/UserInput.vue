@@ -94,7 +94,9 @@ export default Vue.extend({
     border: none;
     color: var(--ueli-white);
     width: 100%;
+    font-family: var(--ueli-font-family);
     font-size: var(--ueli-font-size-24);
+    font-weight: var(--ueli-font-weight-600);
     padding: 0 var(--ueli-spacing-2x);
 }
 
