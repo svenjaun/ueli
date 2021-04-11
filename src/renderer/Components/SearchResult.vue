@@ -106,6 +106,7 @@ export default Vue.extend({
     height: 40px;
     opacity: 0.75;
     transition: var(--ueli-transition);
+    vertical-align: middle;
 }
 
 .info-container {
