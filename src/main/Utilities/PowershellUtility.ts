@@ -1,4 +1,4 @@
-import * as Powershell from "node-powershell";
+import Powershell from "node-powershell";
 
 export class PowershellUtility {
     public static async executePowershellScript(
