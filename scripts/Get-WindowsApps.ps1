@@ -4,17 +4,17 @@ function Get-WindowsApps {
         [string[]]$FileExtensions,
         [string]$AppIconFolder
     )
-            
+
     Add-Type -AssemblyName System.Drawing
-            
+
     $Utf8 = New-Object -TypeName System.Text.UTF8Encoding
-            
+
     $Files = Get-ChildItem -File -Path $FolderPaths -Recurse -Include $FileExtensions | Select-Object -Property Name, FullName, Extension, BaseName
-            
+
     foreach ($File in $Files) {
         $Stream = [System.IO.MemoryStream]::new($Utf8.GetBytes($File.FullName))
         $Hash = Get-FileHash -Algorithm MD5 -InputStream $Stream | Select-Object -ExpandProperty Hash
-        $IconFilePath = "$($AppIconFolder)\\$($Hash).png"
+        $IconFilePath = "$($AppIconFolder)\$($Hash).png"
         $File | Add-Member -MemberType NoteProperty -Name "IconFilePath" -Value $IconFilePath
 
         $IconAlreadyExists = Test-Path -LiteralPath $File.IconFilePath
@@ -23,10 +23,7 @@ function Get-WindowsApps {
             $FilePathToExtractIcon = $File.FullName
 
             if ($File.Extension -eq ".lnk") {
-                $ExtractedShortcut = Extract-Shortcut -ShortcutFilePath $File.FullName
-                if ($ExtractedShortcut) {
-                    $FilePathToExtractIcon = $ExtractedShortcut
-                }
+                $FilePathToExtractIcon = Extract-Shortcut -ShortcutFilePath $File.FullName
             }
 
             $Icon = [System.Drawing.Icon]::ExtractAssociatedIcon($FilePathToExtractIcon);
@@ -35,6 +32,6 @@ function Get-WindowsApps {
             }
         }
     }
-            
-    $Files | ConvertTo-Json
+
+    $Files | ConvertTo-Json -Compress
 }
