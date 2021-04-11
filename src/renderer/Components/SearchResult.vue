@@ -105,7 +105,6 @@ export default Vue.extend({
     width: 40px;
     height: 40px;
     opacity: 0.75;
-    box-shadow: 0 0 var(--ueli-spacing-2x) rgba(0, 0, 0, 0.25);
     transition: var(--ueli-transition);
 }
 
