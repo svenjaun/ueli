@@ -30,24 +30,16 @@ const searchEngine = new SearchEngine([
     new WindowsApplicationSearchPlugin(executePowershellScript, applicationSearchPreferences),
 ]);
 
-const openFilePath = (filePath: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-        shell
-            .openPath(filePath)
-            .then((result) => (result.length === 0 ? resolve() : reject(result)))
-            .catch((error) => reject(error));
-    });
+const openFilePath = async (filePath: string): Promise<void> => {
+    const errorMessage = await shell.openPath(filePath);
+
+    if (errorMessage) {
+        throw new Error(errorMessage);
+    }
 };
 
-const openFileLocation = (filePath: string): Promise<void> => {
-    return new Promise((resolve, reject) => {
-        try {
-            shell.showItemInFolder(filePath);
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
-    });
+const openFileLocation = async (filePath: string): Promise<void> => {
+    shell.showItemInFolder(filePath);
 };
 
 const executionService = new ExecutionService([new FilePathExecutor(openFilePath)]);

@@ -1,5 +1,7 @@
 import { Searchable } from "../Core/Searchable";
 
 export interface SearchPlugin {
-    getAllItems(): Promise<Searchable[]>;
+    getAllItems(): Searchable[];
+    rescan(): Promise<void>;
+    clearCache(): Promise<void>;
 }

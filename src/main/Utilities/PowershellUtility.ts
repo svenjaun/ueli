@@ -1,23 +1,24 @@
 import * as Powershell from "node-powershell";
 
 export class PowershellUtility {
-    public static executePowershellScript(
+    public static async executePowershellScript(
         powershellScript: string,
-        shellOptions: Powershell.ShellOptions = { noProfile: true, executionPolicy: "Bypass" }
+        shellOptions: Powershell.ShellOptions = { noProfile: true, executionPolicy: "Bypass", verbose: false }
     ): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const powershell = new Powershell(shellOptions);
+        const powershell = new Powershell(shellOptions);
 
-            powershell
-                .addCommand(powershellScript)
-                .then(() => {
-                    powershell
-                        .invoke()
-                        .then((output) => resolve(output))
-                        .catch((error) => reject(`Powershell script execution failed. Reason: ${error}`))
-                        .finally(() => powershell.dispose());
-                })
-                .catch((error) => reject(`Failed to add powershell command. Reason: ${error}`));
-        });
+        try {
+            await powershell.addCommand(powershellScript);
+        } catch (error) {
+            throw new Error(`Failed to add powershell command. Reason: ${error}`);
+        }
+
+        try {
+            return await powershell.invoke();
+        } catch (error) {
+            throw new Error(`Powershell script execution failed. Reason: ${error}`);
+        } finally {
+            await powershell.dispose();
+        }
     }
 }

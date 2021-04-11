@@ -28,15 +28,21 @@ export class MainApplication {
     private registerElectronAppEventListeners(): void {
         this.appendCommandlineSwitches();
         this.electronApp.on("ready", () => this.startApp());
-        this.electronApp.on("window-all-closed", () => {
-            this.electronApp.quit();
-        });
+        this.electronApp.on("window-all-closed", () => this.quitApp());
     }
 
     private startApp(): void {
         this.registerIpcEventListeners();
         this.createBrowserWindow();
         this.registerGlobalKeyEventListeners();
+    }
+
+    private quitApp(): void {
+        this.searchEngine
+            .clearCaches()
+            .then(() => console.log("Successfully cleared caches before quitting"))
+            .catch((error) => console.log(`Failed to clear caches before quitting. Reason: ${error}`))
+            .finally(() => this.electronApp.quit());
     }
 
     private appendCommandlineSwitches(): void {
@@ -79,7 +85,7 @@ export class MainApplication {
                     return Promise.reject("Failed to handle search term. Reason: no search term specified.");
                 }
 
-                return this.searchEngine.search(args[0]);
+                return Promise.resolve(this.searchEngine.search(args[0]));
             }
         );
 
