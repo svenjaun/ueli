@@ -104,7 +104,6 @@ export default Vue.extend({
 .icon {
     width: 40px;
     height: 40px;
-    opacity: 0.75;
     transition: var(--ueli-transition);
     vertical-align: middle;
 }
