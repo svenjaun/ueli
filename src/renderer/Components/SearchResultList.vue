@@ -128,6 +128,14 @@ export default Vue.extend({
             }
         });
     },
+
+    watch: {
+        searchResultItems() {
+            if (this.searchResultItems.length > 0) {
+                this.currentlyHoveredPosition = 0;
+            }
+        },
+    },
 });
 </script>
 
