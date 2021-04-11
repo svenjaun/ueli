@@ -38,11 +38,7 @@ export class MainApplication {
     }
 
     private quitApp(): void {
-        this.searchEngine
-            .clearCaches()
-            .then(() => console.log("Successfully cleared caches before quitting"))
-            .catch((error) => console.log(`Failed to clear caches before quitting. Reason: ${error}`))
-            .finally(() => this.electronApp.quit());
+        this.electronApp.quit();
     }
 
     private appendCommandlineSwitches(): void {
