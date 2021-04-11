@@ -5,10 +5,10 @@ import { IpcChannel } from "../common/IpcChannel";
 export class WindowManager {
     private readonly mainHtmlFilePath = join(__dirname, "..", "views", "main.html");
     private readonly preloadFilePath = join(__dirname, "Preload.js");
-    private browserWindow?: BrowserWindow;
+    private mainWindow?: BrowserWindow;
 
-    public createWindow(): void {
-        this.browserWindow = new BrowserWindow({
+    public createMainWindow(): void {
+        this.mainWindow = new BrowserWindow({
             frame: false,
             fullscreen: false,
             height: 500,
@@ -21,37 +21,37 @@ export class WindowManager {
             width: 600,
         });
 
-        this.browserWindow.loadFile(this.mainHtmlFilePath);
-        this.browserWindow.on("blur", () => this.hideMainWindow());
+        this.mainWindow.loadFile(this.mainHtmlFilePath);
+        this.mainWindow.on("blur", () => this.hideMainWindow());
     }
 
     public hideMainWindow(): void {
-        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
-            this.browserWindow.hide();
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+            this.mainWindow.hide();
         }
     }
 
     public showMainWindow(): void {
-        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
-            if (this.browserWindow.isVisible()) {
-                this.browserWindow.focus();
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+            if (this.mainWindow.isVisible()) {
+                this.mainWindow.focus();
             } else {
-                this.browserWindow.show();
+                this.mainWindow.show();
             }
 
-            this.sendMessageToWindow(this.browserWindow, IpcChannel.MainWindowShown);
+            this.sendMessageToWindow(this.mainWindow, IpcChannel.MainWindowShown);
         }
     }
 
     public toggleMainWindow(): void {
-        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
-            this.browserWindow.isVisible() ? this.hideMainWindow() : this.showMainWindow();
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
+            this.mainWindow.isVisible() ? this.hideMainWindow() : this.showMainWindow();
         }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private sendMessageToWindow(browserWindow: BrowserWindow, channel: IpcChannel, ...args: any): void {
-        if (this.browserWindow && !this.browserWindow.isDestroyed()) {
+        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
             browserWindow.webContents.send(channel, args);
         }
     }

@@ -26,7 +26,7 @@ const applicationSearchPreferences: ApplicationSearchPreferences = {
 const executePowershellScript = (powershellScript: string): Promise<string> =>
     PowershellUtility.executePowershellScript(powershellScript);
 
-const searchEngine = new SearchEngine([
+const searchEngine = new SearchEngine({}, [
     new WindowsApplicationSearchPlugin(executePowershellScript, applicationSearchPreferences),
 ]);
 

@@ -66,7 +66,7 @@ export class MainApplication {
     }
 
     private createBrowserWindow(): void {
-        this.windowManager.createWindow();
+        this.windowManager.createMainWindow();
     }
 
     private hideWindow(): void {

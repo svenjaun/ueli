@@ -1,11 +1,17 @@
 import { SearchResultItem } from "../../common/SearchResultItem";
 import { SearchPlugin } from "../Plugins/SearchPlugin";
 import { Searchable } from "./Searchable";
+import Fuse from "fuse.js";
+import { SearchEngineSettings } from "./SearchEngineSettings";
 
 export class SearchEngine {
     private readonly rescanIntervalInSeconds = 60;
+    private readonly defaultSearchEngineSettings: Fuse.IFuseOptions<SearchResultItem> = {
+        threshold: 0.4,
+        keys: ["name"],
+    };
 
-    constructor(private readonly searchPlugins: SearchPlugin[]) {
+    constructor(private searchEngineSettings: SearchEngineSettings, private readonly searchPlugins: SearchPlugin[]) {
         this.rescan();
     }
 
@@ -14,11 +20,11 @@ export class SearchEngine {
             return [];
         }
 
-        return this.getAllSearchables()
-            .map((searchable) => searchable.toSearchResultItem())
-            .filter((searchResultItem) => {
-                return searchResultItem.name.toLowerCase().indexOf(searchTerm.trim().toLowerCase()) > -1;
-            });
+        const allSearchResultItems = this.getAllSearchables().map((searchable) => searchable.toSearchResultItem());
+
+        const settings = Object.assign(this.defaultSearchEngineSettings, this.searchEngineSettings);
+
+        return new Fuse(allSearchResultItems, settings).search(searchTerm).map((s) => s.item);
     }
 
     public async clearCaches(): Promise<void> {
