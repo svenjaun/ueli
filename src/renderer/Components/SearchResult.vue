@@ -85,14 +85,12 @@ export default Vue.extend({
     align-items: center;
     padding: var(--ueli-spacing-2x) var(--ueli-spacing-4x);
     box-sizing: border-box;
-    opacity: 0.75;
     transition: var(--ueli-transition);
     user-select: none;
 }
 
 .container.hovered {
-    background-color: rgba(255, 255, 255, 0.05);
-    opacity: 1;
+    background-color: var(--ueli-black-10);
 }
 
 .container:active {
@@ -137,5 +135,6 @@ export default Vue.extend({
 .description {
     font-size: var(--ueli-font-size-11);
     font-weight: var(--ueli-font-weight-400);
+    color: var(--ueli-black-90);
 }
 </style>

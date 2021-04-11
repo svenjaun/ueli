@@ -105,10 +105,11 @@ export default Vue.extend({
 
 <style>
 :root {
-    --ueli-black: #363639;
-    --ueli-black-10: #51514f;
-    --ueli-white: #fff;
-    --ueli-blue: #429ce3;
+    --ueli-black: #263238;
+    --ueli-black-10: #37474f;
+    --ueli-black-90: #bdbdbd;
+    --ueli-white: #fafafa;
+    --ueli-blue: #1565c0;
 
     --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
