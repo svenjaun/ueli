@@ -13,6 +13,12 @@ export class SearchResultItemDummy {
         };
     }
 
+    public static withName(name: string): SearchResultItem {
+        const empty = SearchResultItemDummy.empty();
+        empty.name = name;
+        return empty;
+    }
+
     public static withExecutorId(executorId: string): SearchResultItem {
         const empty = SearchResultItemDummy.empty();
         empty.executorId = executorId;
