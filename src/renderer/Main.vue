@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import UserInput from "@/Components/UserInput.vue";
-import SearchResultList from "@/Components/SearchResultList.vue";
+import { defineComponent } from "vue";
+import UserInput from "./Components/UserInput.vue";
+import SearchResultList from "./Components/SearchResultList.vue";
 import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
 import { SearchResultItem } from "../common/SearchResultItem";
@@ -26,7 +26,7 @@ interface Data {
     searchResultItems: SearchResultItem[];
 }
 
-export default Vue.extend({
+export default defineComponent({
     components: {
         SearchResultList,
         UserInput,

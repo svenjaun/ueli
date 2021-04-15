@@ -1,3 +1,3 @@
-import Vue from "vue";
+import { defineComponent } from "vue";
 
-export const vueEventEmitter = new Vue();
+export const vueEventEmitter = defineComponent({});

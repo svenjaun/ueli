@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import SearchResult from "./SearchResult.vue";
 import { SearchResultItem } from "../../common/SearchResultItem";
 import { vueEventEmitter } from "../VueEventEmitter";
@@ -27,7 +27,7 @@ interface Data {
     currentlyHoveredPosition?: number;
 }
 
-export default Vue.extend({
+export default defineComponent({
     props: {
         searchResultItems: {
             type: Array as () => SearchResultItem[],

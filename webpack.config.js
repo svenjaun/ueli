@@ -1,5 +1,5 @@
-const path = require("path");
-const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const { join } = require("path");
+const { VueLoaderPlugin } = require("vue-loader");
 
 const isProductionBuild = process.env.NODE_ENV === "production";
 
@@ -9,16 +9,11 @@ const devtool = isProductionBuild ? undefined : "source-map";
 console.log(`Build mode: ${mode}`);
 
 const entryPoints = {
-    main: path.join(__dirname, "src", "main", "Main.ts"),
-    preload: path.join(__dirname, "src", "common", "Preload.ts"),
+    main: join(__dirname, "src", "main", "Main.ts"),
+    preload: join(__dirname, "src", "common", "Preload.ts"),
     renderer: {
-        mainWindow: path.join(__dirname, "src", "renderer", "MainRenderer.ts"),
-        settingsWindow: path.join(
-            __dirname,
-            "src",
-            "renderer",
-            "SettingsRenderer.ts"
-        ),
+        mainWindow: join(__dirname, "src", "renderer", "MainRenderer.ts"),
+        settingsWindow: join(__dirname, "src", "renderer", "SettingsRenderer.ts"),
     },
 };
 
@@ -31,7 +26,7 @@ const targets = {
 const baseConfig = {
     output: {
         filename: "[name].js",
-        path: path.join(__dirname, "bundle"),
+        path: join(__dirname, "bundle"),
     },
     mode,
     devtool,
@@ -99,8 +94,7 @@ const rendererBaseConfig = {
     },
     resolve: {
         alias: {
-            "@": path.join(__dirname, "src", "renderer"),
-            vue$: "vue/dist/vue.esm.js",
+            vue: "@vue/runtime-dom",
         },
         extensions: [".ts", ".js"],
     },

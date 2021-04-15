@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import { VueEvent } from "../VueEvent";
 import { vueEventEmitter } from "../VueEventEmitter";
 
-export default Vue.extend({
+export default defineComponent({
     data() {
         return {
             isFocussed: false,
