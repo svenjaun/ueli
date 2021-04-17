@@ -113,11 +113,19 @@ export default defineComponent({
 
 <style>
 :root {
-    --ueli-black: #263238;
-    --ueli-black-10: #37474f;
-    --ueli-black-90: #bdbdbd;
+    --ueli-black-900: #263238;
+    --ueli-black-800: #37474f;
+    --ueli-black-700: #455a64;
+    --ueli-black-600: #546e7a;
+    --ueli-black-500: #607d8b;
+    --ueli-black-400: #78909c;
+    --ueli-black-300: #90a4ae;
+    --ueli-black-200: #b0bec5;
+    --ueli-black-100: #cfd8dc;
+    --ueli-black-50: #eceff1;
+
     --ueli-white: #fafafa;
-    --ueli-blue: #1565c0;
+    --ueli-blue: #2196f3;
 
     --ueli-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -136,6 +144,10 @@ export default defineComponent({
     --ueli-spacing-4x: 16px;
 
     --ueli-transition: 100ms ease-in-out all;
+
+    --ueli-scrollbar-size: 8px;
+    --ueli-scrollbar-background-color: var(--ueli--black-800);
+    --ueli-scrollbar-foreground-color: var(--ueli-black-700);
 }
 
 html {
@@ -147,7 +159,7 @@ body {
     padding: 0;
     height: 100%;
 
-    background-color: var(--ueli-black);
+    background-color: var(--ueli-black-900);
     color: var(--ueli-white);
     font-family: var(--ueli-font-family);
 }
@@ -180,5 +192,18 @@ body {
     width: 100%;
     flex-grow: 1;
     overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    width: var(--ueli-scrollbar-size);
+    height: var(--ueli-scrollbar-size);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ueli-scrollbar-foreground-color);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ueli-scrollbar-background-color);
 }
 </style>

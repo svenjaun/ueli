@@ -91,11 +91,11 @@ export default defineComponent({
 }
 
 .container.hovered {
-    background-color: var(--ueli-black-10);
+    background-color: var(--ueli-black-800);
 }
 
 .container:active {
-    background-color: var(--ueli-black-10);
+    background-color: var(--ueli-black-500);
 }
 
 .container:active > .icon-container > .icon {
@@ -135,6 +135,6 @@ export default defineComponent({
 .description {
     font-size: var(--ueli-font-size-11);
     font-weight: var(--ueli-font-weight-400);
-    color: var(--ueli-black-90);
+    color: var(--ueli-black-300);
 }
 </style>

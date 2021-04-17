@@ -80,7 +80,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     width: 100%;
-    border-bottom: 2px solid var(--ueli-black-10);
+    border-bottom: 2px solid var(--ueli-black-400);
     transition: var(--ueli-transition);
     -webkit-app-region: no-drag;
 }
