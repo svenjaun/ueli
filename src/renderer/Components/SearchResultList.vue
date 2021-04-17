@@ -55,11 +55,11 @@ export default defineComponent({
 
     methods: {
         execute(searchResultItem: SearchResultItem): void {
-            this.$emit("executionRequested", searchResultItem);
+            this.$emit("executionRequested", { ...searchResultItem });
         },
 
         openLocation(searchResultItem: SearchResultItem): void {
-            this.$emit("openLocationRequested", searchResultItem);
+            this.$emit("openLocationRequested", { ...searchResultItem });
         },
 
         currentlySelectedIndexChange(direction: "ArrowUp" | "ArrowDown"): void {
