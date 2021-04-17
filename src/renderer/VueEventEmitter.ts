@@ -1,3 +1,3 @@
-import { defineComponent } from "vue";
+import mitt, { Emitter } from "mitt";
 
-export const vueEventEmitter = defineComponent({});
+export const vueEventEmitter: Emitter = mitt();

@@ -4,7 +4,7 @@ import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
 
 document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) =>
-    vueEventEmitter.$emit(VueEvent.GlobalKeyDown, keyboardEvent)
+    vueEventEmitter.emit<KeyboardEvent>(VueEvent.GlobalKeyDown, keyboardEvent)
 );
 
 createApp(MainApp).mount("#app");

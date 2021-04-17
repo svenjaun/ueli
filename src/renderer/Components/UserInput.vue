@@ -21,6 +21,12 @@ import { VueEvent } from "../VueEvent";
 import { vueEventEmitter } from "../VueEventEmitter";
 
 export default defineComponent({
+    emits: {
+        searchTermChanged(searchTerm: string) {
+            return searchTerm !== undefined;
+        },
+    },
+
     data() {
         return {
             isFocussed: false,
@@ -43,7 +49,7 @@ export default defineComponent({
         },
 
         registerVueEventListeners(): void {
-            vueEventEmitter.$on(VueEvent.MainWindowShown, () => this.focusOnUserInput());
+            vueEventEmitter.on(VueEvent.MainWindowShown, () => this.focusOnUserInput());
         },
     },
 

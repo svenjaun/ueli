@@ -44,12 +44,12 @@ export default defineComponent({
                 case "ArrowUp":
                 case "ArrowDown":
                     keyboardEvent.preventDefault();
-                    vueEventEmitter.$emit(VueEvent.UserInputArrowKeyPressed, keyboardEvent.key);
+                    vueEventEmitter.emit(VueEvent.UserInputArrowKeyPressed, keyboardEvent.key);
                     break;
 
                 case "Enter":
                     keyboardEvent.preventDefault();
-                    vueEventEmitter.$emit(
+                    vueEventEmitter.emit(
                         VueEvent.UserInputEnterPressed,
                         keyboardEvent.ctrlKey || keyboardEvent.metaKey
                     );
@@ -62,18 +62,24 @@ export default defineComponent({
             }
         },
 
-        onSearchTermChanged(searchTerm: string): void {
-            window.Bridge.ipcRenderer
-                .invoke<SearchResultItem[]>(IpcChannel.Search, searchTerm)
-                .then((result) => (this.searchResultItems = result))
-                .catch((error) => console.error(error));
+        async onSearchTermChanged(searchTerm: string): Promise<void> {
+            try {
+                this.searchResultItems = await window.Bridge.ipcRenderer.invoke<SearchResultItem[]>(
+                    IpcChannel.Search,
+                    searchTerm
+                );
+            } catch (error) {
+                console.log(error);
+            }
         },
 
-        onExecutionRequested(searchResultItem: SearchResultItem): void {
-            window.Bridge.ipcRenderer
-                .invoke(IpcChannel.Execute, searchResultItem)
-                .then(() => console.log("done"))
-                .catch((error) => console.error(error));
+        async onExecutionRequested(searchResultItem: SearchResultItem): Promise<void> {
+            try {
+                await window.Bridge.ipcRenderer.invoke(IpcChannel.Execute, searchResultItem);
+                console.log("done");
+            } catch (error) {
+                console.log(error);
+            }
         },
 
         onOpenLocationRequested(searchResultItem: SearchResultItem): void {
@@ -85,14 +91,16 @@ export default defineComponent({
 
         registerIpcEventListeners(): void {
             window.Bridge.ipcRenderer.on(IpcChannel.MainWindowShown, () => {
-                vueEventEmitter.$emit(VueEvent.MainWindowShown);
+                vueEventEmitter.emit(VueEvent.MainWindowShown);
             });
         },
 
         registerVueEventListeners(): void {
-            vueEventEmitter.$on(VueEvent.GlobalKeyDown, (keyboardEvent: KeyboardEvent) =>
-                this.onGlobalKeyDown(keyboardEvent)
-            );
+            vueEventEmitter.on(VueEvent.GlobalKeyDown, (event?: KeyboardEvent) => {
+                if (event) {
+                    this.onGlobalKeyDown(event);
+                }
+            });
         },
     },
 
@@ -142,6 +150,10 @@ body {
     background-color: var(--ueli-black);
     color: var(--ueli-white);
     font-family: var(--ueli-font-family);
+}
+
+#app {
+    height: 100%;
 }
 </style>
 

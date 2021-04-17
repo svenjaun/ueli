@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import SearchResult from "./SearchResult.vue";
 import { SearchResultItem } from "../../common/SearchResultItem";
 import { vueEventEmitter } from "../VueEventEmitter";
@@ -28,9 +28,19 @@ interface Data {
 }
 
 export default defineComponent({
+    emits: {
+        executionRequested(searchResultItem: SearchResultItem): boolean {
+            return searchResultItem !== undefined;
+        },
+
+        openLocationRequested(searchResultItem: SearchResultItem): boolean {
+            return searchResultItem !== undefined;
+        },
+    },
+
     props: {
         searchResultItems: {
-            type: Array as () => SearchResultItem[],
+            type: Array as PropType<SearchResultItem[]>,
             required: true,
         },
     },
@@ -114,17 +124,21 @@ export default defineComponent({
     },
 
     mounted(): void {
-        vueEventEmitter.$on(VueEvent.UserInputArrowKeyPressed, (key: "ArrowUp" | "ArrowDown") => {
-            this.currentlySelectedIndexChange(key);
+        vueEventEmitter.on(VueEvent.UserInputArrowKeyPressed, (key?: "ArrowUp" | "ArrowDown") => {
+            if (key) {
+                this.currentlySelectedIndexChange(key);
+            }
         });
 
-        vueEventEmitter.$on(VueEvent.UserInputEnterPressed, (ctrlOrMetaPressed: boolean) => {
+        vueEventEmitter.on(VueEvent.UserInputEnterPressed, (ctrlOrMetaPressed?: boolean) => {
             const currentlySelectedItem = this.searchResultItems.find(
                 (searchResultItem, index) => index === this.currentlyHoveredPosition
             );
 
             if (currentlySelectedItem) {
-                ctrlOrMetaPressed ? this.openLocation(currentlySelectedItem) : this.execute(currentlySelectedItem);
+                ctrlOrMetaPressed
+                    ? this.openLocation({ ...currentlySelectedItem })
+                    : this.execute({ ...currentlySelectedItem });
             }
         });
     },

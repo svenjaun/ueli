@@ -87,7 +87,7 @@ export class MainApplication {
 
         this.ipcMain.handle(
             IpcChannel.Execute,
-            (event: IpcMainInvokeEvent, args: SearchResultItem[]): Promise<void> => {
+            async (event: IpcMainInvokeEvent, args: SearchResultItem[]): Promise<void> => {
                 if (args.length === 0) {
                     return Promise.reject(
                         "Failed to execute search result item. Reason: no search result items given."
@@ -96,7 +96,7 @@ export class MainApplication {
 
                 this.hideWindow();
 
-                return this.executionService.execute(args[0]);
+                await this.executionService.execute(args[0]);
             }
         );
 
