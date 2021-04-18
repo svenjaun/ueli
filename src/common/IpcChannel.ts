@@ -4,4 +4,5 @@ export enum IpcChannel {
     MainWindowShown = "MainWindowShown",
     OpenLocation = "OpenLocation",
     Search = "Search",
+    TrayIconEvent = "TrayIconEvent",
 }

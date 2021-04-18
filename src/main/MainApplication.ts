@@ -7,6 +7,8 @@ import { CommandlineSwitchConfiguration } from "./CommandlineSwitchConfiguration
 import { ExecutionService } from "./Core/ExecutionService";
 import { LocationOpeningService } from "./Core/LocationOpeningService";
 import { SearchEngine } from "./Core/SearchEngine";
+import { TrayIconEvent } from "./TrayIconEvent";
+import { TrayIconManager } from "./TrayIconManager";
 import { WindowManager } from "./WindowManager";
 
 export class MainApplication {
@@ -15,6 +17,7 @@ export class MainApplication {
         private readonly ipcMain: IpcMain,
         private readonly globalShortcut: GlobalShortcut,
         private readonly windowManager: WindowManager,
+        private readonly trayIconManager: TrayIconManager,
         private readonly operatingSystem: OperatingSystem,
         private readonly searchEngine: SearchEngine,
         private readonly executionService: ExecutionService,
@@ -33,6 +36,7 @@ export class MainApplication {
 
     private startApp(): void {
         this.registerIpcEventListeners();
+        this.createTrayIcon();
         this.createBrowserWindow();
         this.registerGlobalKeyEventListeners();
     }
@@ -61,8 +65,16 @@ export class MainApplication {
         });
     }
 
+    private createTrayIcon(): void {
+        this.trayIconManager.createTrayIcon();
+    }
+
     private createBrowserWindow(): void {
         this.windowManager.createMainWindow();
+    }
+
+    private showWindow(): void {
+        this.windowManager.showMainWindow();
     }
 
     private hideWindow(): void {
@@ -114,5 +126,22 @@ export class MainApplication {
         );
 
         this.ipcMain.on(IpcChannel.EscapePressed, () => this.hideWindow());
+
+        this.ipcMain.on(IpcChannel.TrayIconEvent, (ipcMainEvent, trayIconEvent: TrayIconEvent) =>
+            this.handleTrayIconEvent(trayIconEvent)
+        );
+    }
+
+    private handleTrayIconEvent(event: TrayIconEvent): void {
+        switch (event) {
+            case TrayIconEvent.ShowClicked:
+                return this.showWindow();
+
+            case TrayIconEvent.QuitClicked:
+                return this.quitApp();
+
+            default:
+                throw new Error(`Failed to handle tray icon event ${event}. Reason: no handler found.`);
+        }
     }
 }

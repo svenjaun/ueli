@@ -11,9 +11,11 @@ import { WindowManager } from "./WindowManager";
 import { PowershellUtility } from "./Utilities/PowershellUtility";
 import { ApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/ApplicationSearchPreferences";
 import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
+import { TrayIconManager } from "./TrayIconManager";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 const windowManager = new WindowManager();
+const trayIconManager = new TrayIconManager(ipcMain);
 
 const applicationSearchPreferences: ApplicationSearchPreferences = {
     folderPaths: [
@@ -50,6 +52,7 @@ new MainApplication(
     ipcMain,
     globalShortcut,
     windowManager,
+    trayIconManager,
     operatingSystem,
     searchEngine,
     executionService,
