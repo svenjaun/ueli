@@ -2,10 +2,10 @@
     <div
         class="container"
         :class="{ hovered: hovered }"
+        :id="elementId"
         @click="onClick"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
-        :id="elementId"
     >
         <div class="icon-container">
             <img class="icon" :src="icon" />
@@ -25,6 +25,24 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
+    emits: {
+        openLocation(): boolean {
+            return true;
+        },
+
+        execute(): boolean {
+            return true;
+        },
+
+        mouseenter(): boolean {
+            return true;
+        },
+
+        mouseleave(): boolean {
+            return true;
+        },
+    },
+
     props: {
         position: {
             type: Number,

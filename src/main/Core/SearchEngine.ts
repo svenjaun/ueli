@@ -1,8 +1,9 @@
+import Fuse from "fuse.js";
 import { SearchResultItem } from "../../common/SearchResultItem";
 import { SearchPlugin } from "../Plugins/SearchPlugin";
 import { Searchable } from "./Searchable";
-import Fuse from "fuse.js";
 import { SearchEngineSettings } from "./SearchEngineSettings";
+import { SearchEngineRescanError } from "./SearchEngineRescanError";
 
 export class SearchEngine {
     private readonly rescanIntervalInSeconds = 60;
@@ -37,13 +38,14 @@ export class SearchEngine {
 
     private async rescan(): Promise<void> {
         const rescanIntervalInMilliseconds = this.rescanIntervalInSeconds * 1000;
+        const scheduleNextRescan = () => setTimeout(() => this.rescan(), rescanIntervalInMilliseconds);
 
         try {
             await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.rescan()));
         } catch (error) {
-            console.error(`Failed to rescan all plugins. Reason: ${error}`);
+            this.handleError(new SearchEngineRescanError(error));
         } finally {
-            setTimeout(() => this.rescan(), rescanIntervalInMilliseconds);
+            scheduleNextRescan();
         }
     }
 
@@ -55,5 +57,9 @@ export class SearchEngine {
         });
 
         return result;
+    }
+
+    private handleError(error: Error): void {
+        console.error(`Handled error: ${error.message}`);
     }
 }

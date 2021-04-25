@@ -17,17 +17,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { VueEvent } from "../VueEvent";
-import { vueEventEmitter } from "../VueEventEmitter";
+import { VueEvent } from "../../VueEvent";
+import { vueEventEmitter } from "../../VueEventEmitter";
 
 export default defineComponent({
     emits: {
-        searchTermChanged(searchTerm: string) {
+        searchTermChanged(searchTerm: string): boolean {
             return searchTerm !== undefined;
         },
     },
 
-    data() {
+    data(): { isFocussed: boolean; searchTerm: string } {
         return {
             isFocussed: false,
             searchTerm: "",
@@ -54,12 +54,12 @@ export default defineComponent({
     },
 
     watch: {
-        searchTerm() {
+        searchTerm(): void {
             this.$emit("searchTermChanged", this.searchTerm);
         },
     },
 
-    mounted() {
+    mounted(): void {
         this.registerVueEventListeners();
     },
 });

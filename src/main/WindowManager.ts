@@ -4,8 +4,11 @@ import { IpcChannel } from "../common/IpcChannel";
 
 export class WindowManager {
     private readonly mainHtmlFilePath = join(__dirname, "..", "views", "main.html");
-    private readonly preloadFilePath = join(__dirname, "Preload.js");
+    private readonly settingsHtmlFilePath = join(__dirname, "..", "views", "settings.html");
+    private readonly preloadJsFilePath = join(__dirname, "Preload.js");
+
     private mainWindow?: BrowserWindow;
+    private settingsWindow?: BrowserWindow;
 
     public createMainWindow(): void {
         this.mainWindow = new BrowserWindow({
@@ -15,7 +18,7 @@ export class WindowManager {
             show: false,
             transparent: true,
             webPreferences: {
-                preload: this.preloadFilePath,
+                preload: this.preloadJsFilePath,
                 spellcheck: false,
             },
             width: 600,
@@ -25,27 +28,67 @@ export class WindowManager {
         this.mainWindow.on("blur", () => this.hideMainWindow());
     }
 
-    public hideMainWindow(): void {
-        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-            this.mainWindow.hide();
-        }
-    }
+    public createSettingsWindow(): void {
+        this.settingsWindow = new BrowserWindow({
+            webPreferences: {
+                preload: this.preloadJsFilePath,
+                spellcheck: false,
+            },
+        });
 
-    public showMainWindow(): void {
-        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-            if (this.mainWindow.isVisible()) {
-                this.mainWindow.focus();
-            } else {
-                this.mainWindow.show();
-            }
-
-            this.sendMessageToWindow(this.mainWindow, IpcChannel.MainWindowShown);
-        }
+        this.settingsWindow.setMenuBarVisibility(false);
+        this.settingsWindow.loadFile(this.settingsHtmlFilePath);
     }
 
     public toggleMainWindow(): void {
-        if (this.mainWindow && !this.mainWindow.isDestroyed()) {
-            this.mainWindow.isVisible() ? this.hideMainWindow() : this.showMainWindow();
+        this.toggleWindow(this.mainWindow);
+    }
+
+    public showMainWindow(): void {
+        this.showWindow(this.mainWindow);
+    }
+
+    public showSettingsWindow(): void {
+        if (!this.settingsWindow || this.settingsWindow.isDestroyed()) {
+            this.createSettingsWindow();
+        }
+
+        this.showWindow(this.settingsWindow);
+    }
+
+    public hideMainWindow(): void {
+        this.hideWindow(this.mainWindow);
+    }
+
+    public hideSettingsWindow(): void {
+        this.hideWindow(this.settingsWindow);
+    }
+
+    public toggleSettingsWindow(): void {
+        this.toggleWindow(this.settingsWindow);
+    }
+
+    private toggleWindow(browserWindow?: BrowserWindow) {
+        if (browserWindow && !browserWindow.isDestroyed()) {
+            browserWindow.isVisible() ? this.hideWindow(browserWindow) : this.showWindow(browserWindow);
+        }
+    }
+
+    private showWindow(browserWindow?: BrowserWindow): void {
+        if (browserWindow && !browserWindow.isDestroyed()) {
+            if (browserWindow.isVisible()) {
+                browserWindow.focus();
+            } else {
+                browserWindow.show();
+            }
+
+            this.sendMessageToWindow(browserWindow, IpcChannel.MainWindowShown);
+        }
+    }
+
+    private hideWindow(browserWindow?: BrowserWindow): void {
+        if (browserWindow && !browserWindow.isDestroyed()) {
+            browserWindow.hide();
         }
     }
 

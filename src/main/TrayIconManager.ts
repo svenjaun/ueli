@@ -24,6 +24,10 @@ export class TrayIconManager {
                 click: () => this.emitTrayIconEvent(TrayIconEvent.ShowClicked),
             },
             {
+                label: "Settings",
+                click: () => this.emitTrayIconEvent(TrayIconEvent.SettingsClicked),
+            },
+            {
                 label: "Quit",
                 click: () => this.emitTrayIconEvent(TrayIconEvent.QuitClicked),
             },

@@ -1,0 +1,32 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    background-color: var(--ueli-black-900);
+    color: var(--ueli-white);
+    font-family: var(--ueli-font-family);
+
+    user-select: none;
+}
+
+#app {
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: var(--ueli-scrollbar-size);
+    height: var(--ueli-scrollbar-size);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ueli-scrollbar-foreground-color);
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ueli-scrollbar-background-color);
+}

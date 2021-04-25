@@ -1,10 +1,10 @@
 import { createApp } from "vue";
-import MainApp from "./Main.vue";
-import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
+import { vueEventEmitter } from "./VueEventEmitter";
+import Main from "./Main.vue";
 
 document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) =>
     vueEventEmitter.emit<KeyboardEvent>(VueEvent.GlobalKeyDown, keyboardEvent)
 );
 
-createApp(MainApp).mount("#app");
+createApp(Main).mount("#app");

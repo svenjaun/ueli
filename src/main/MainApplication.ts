@@ -37,7 +37,7 @@ export class MainApplication {
     private startApp(): void {
         this.registerIpcEventListeners();
         this.createTrayIcon();
-        this.createBrowserWindow();
+        this.windowManager.createMainWindow();
         this.registerGlobalKeyEventListeners();
     }
 
@@ -69,18 +69,6 @@ export class MainApplication {
         this.trayIconManager.createTrayIcon();
     }
 
-    private createBrowserWindow(): void {
-        this.windowManager.createMainWindow();
-    }
-
-    private showWindow(): void {
-        this.windowManager.showMainWindow();
-    }
-
-    private hideWindow(): void {
-        this.windowManager.hideMainWindow();
-    }
-
     private registerGlobalKeyEventListeners(): void {
         this.globalShortcut.register("Alt+Space", () => this.windowManager.toggleMainWindow());
     }
@@ -106,7 +94,7 @@ export class MainApplication {
                     );
                 }
 
-                this.hideWindow();
+                this.windowManager.hideMainWindow();
 
                 await this.executionService.execute(args[0]);
             }
@@ -119,13 +107,13 @@ export class MainApplication {
                     return Promise.reject("Unable to open location. Reason: no search result items given.");
                 }
 
-                this.hideWindow();
+                this.windowManager.hideMainWindow();
 
                 return this.locationOpeningService.openLocation(args[0]);
             }
         );
 
-        this.ipcMain.on(IpcChannel.EscapePressed, () => this.hideWindow());
+        this.ipcMain.on(IpcChannel.EscapePressed, () => this.windowManager.hideMainWindow());
 
         this.ipcMain.on(IpcChannel.TrayIconEvent, (ipcMainEvent, trayIconEvent: TrayIconEvent) =>
             this.handleTrayIconEvent(trayIconEvent)
@@ -135,7 +123,10 @@ export class MainApplication {
     private handleTrayIconEvent(event: TrayIconEvent): void {
         switch (event) {
             case TrayIconEvent.ShowClicked:
-                return this.showWindow();
+                return this.windowManager.showMainWindow();
+
+            case TrayIconEvent.SettingsClicked:
+                return this.windowManager.showSettingsWindow();
 
             case TrayIconEvent.QuitClicked:
                 return this.quitApp();
