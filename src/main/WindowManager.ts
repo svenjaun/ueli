@@ -49,8 +49,11 @@ export class WindowManager {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private sendMessageToWindow(browserWindow: BrowserWindow, channel: IpcChannel, ...args: any): void {
+    private sendMessageToWindow<ArgumentType>(
+        browserWindow: BrowserWindow,
+        channel: IpcChannel,
+        ...args: ArgumentType[]
+    ): void {
         if (this.mainWindow && !this.mainWindow.isDestroyed()) {
             browserWindow.webContents.send(channel, args);
         }

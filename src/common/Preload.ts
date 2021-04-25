@@ -4,29 +4,21 @@ import { IpcChannel } from "./IpcChannel";
 
 const bridge: Bridge = {
     ipcRenderer: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        send: (channel: IpcChannel, ...arg: any) =>
-            ipcRenderer.send(channel.toString(), arg),
+        send: <ArgumentType>(channel: IpcChannel, ...arg: ArgumentType[]) => ipcRenderer.send(channel.toString(), arg),
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        sendSync: (channel: IpcChannel, ...arg: any) =>
-            ipcRenderer.sendSync(channel.toString(), arg),
+        sendSync: <ArgumentType, ReturnType>(channel: IpcChannel, ...arg: ArgumentType[]) =>
+            ipcRenderer.sendSync(channel.toString(), arg) as ReturnType,
 
-        on: (
+        on: <ArgumentType>(channel: IpcChannel, listener: (event: IpcRendererEvent, ...args: ArgumentType[]) => void) =>
+            ipcRenderer.on(channel.toString(), listener),
+
+        once: <ArgumentType>(
             channel: IpcChannel,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            listener: (event: IpcRendererEvent, ...args: any[]) => void
-        ) => ipcRenderer.on(channel.toString(), listener),
-
-        once: (
-            channel: IpcChannel,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            listener: (event: IpcRendererEvent, ...args: any[]) => void
+            listener: (event: IpcRendererEvent, ...args: ArgumentType[]) => void
         ) => ipcRenderer.once(channel.toString(), listener),
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        invoke: <T>(channel: IpcChannel, ...arg: any) => {
-            return ipcRenderer.invoke(channel, arg) as Promise<T>;
+        invoke: <ArgumentType, ReturnType>(channel: IpcChannel, ...arg: ArgumentType[]) => {
+            return ipcRenderer.invoke(channel, arg) as Promise<ReturnType>;
         },
     },
 };

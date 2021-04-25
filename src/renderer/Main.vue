@@ -64,7 +64,7 @@ export default defineComponent({
 
         async onSearchTermChanged(searchTerm: string): Promise<void> {
             try {
-                this.searchResultItems = await window.Bridge.ipcRenderer.invoke<SearchResultItem[]>(
+                this.searchResultItems = await window.Bridge.ipcRenderer.invoke<string, SearchResultItem[]>(
                     IpcChannel.Search,
                     searchTerm
                 );
