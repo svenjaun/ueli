@@ -13,6 +13,7 @@ export class TrayIconManager {
 
     public createTrayIcon(): void {
         this.trayIcon = new Tray(this.trayIconPath);
+        this.trayIcon.setToolTip("ueli");
         this.trayIcon.setContextMenu(this.getContextMenu());
     }
 
