@@ -7,4 +7,6 @@ document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) =>
     vueEventEmitter.emit<KeyboardEvent>(VueEvent.GlobalKeyDown, keyboardEvent)
 );
 
-createApp(Main).mount("#app");
+const app = createApp(Main);
+app.config.globalProperties.Bridge = window.Bridge;
+app.mount("#app");

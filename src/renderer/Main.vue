@@ -60,14 +60,14 @@ export default defineComponent({
 
                 case "Escape":
                     keyboardEvent.preventDefault();
-                    window.Bridge.ipcRenderer.send(IpcChannel.EscapePressed);
+                    this.Bridge.ipcRenderer.send(IpcChannel.EscapePressed);
                     break;
             }
         },
 
         async onSearchTermChanged(searchTerm: string): Promise<void> {
             try {
-                this.searchResultItems = await window.Bridge.ipcRenderer.invoke<string, SearchResultItem[]>(
+                this.searchResultItems = await this.Bridge.ipcRenderer.invoke<string, SearchResultItem[]>(
                     IpcChannel.Search,
                     searchTerm
                 );
@@ -78,7 +78,7 @@ export default defineComponent({
 
         async onExecutionRequested(searchResultItem: SearchResultItem): Promise<void> {
             try {
-                await window.Bridge.ipcRenderer.invoke(IpcChannel.Execute, searchResultItem);
+                await this.Bridge.ipcRenderer.invoke(IpcChannel.Execute, searchResultItem);
             } catch (error) {
                 this.handleError(error);
             }
@@ -86,14 +86,14 @@ export default defineComponent({
 
         async onOpenLocationRequested(searchResultItem: SearchResultItem): Promise<void> {
             try {
-                await window.Bridge.ipcRenderer.invoke(IpcChannel.OpenLocation, searchResultItem);
+                await this.Bridge.ipcRenderer.invoke(IpcChannel.OpenLocation, searchResultItem);
             } catch (error) {
                 this.handleError(error);
             }
         },
 
         registerIpcEventListeners(): void {
-            window.Bridge.ipcRenderer.on(IpcChannel.MainWindowShown, () => {
+            this.Bridge.ipcRenderer.on(IpcChannel.MainWindowShown, () => {
                 vueEventEmitter.emit(VueEvent.MainWindowShown);
             });
         },

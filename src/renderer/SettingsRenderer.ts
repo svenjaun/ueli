@@ -19,6 +19,6 @@ const router = createRouter({
 });
 
 const app = createApp(Settings);
-
+app.config.globalProperties.Bridge = window.Bridge;
 app.use(router);
 app.mount("#app");
