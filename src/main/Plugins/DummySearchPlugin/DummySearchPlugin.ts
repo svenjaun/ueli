@@ -1,13 +1,17 @@
 import { Searchable } from "../../Core/Searchable";
+import { DummyApplicationRuntimeInformation } from "../../DummyApplicationRuntimeInformation";
 import { MethodNotImplementedError } from "../../Errors/MethodNotImplementedError";
 import { SearchPlugin } from "../SearchPlugin";
 
-export class DummySearchPlugin implements SearchPlugin {
+export class DummySearchPlugin extends SearchPlugin {
     constructor(
+        applicationTempPath: string,
         public onGetAllItems?: () => Searchable[],
         public onRescan?: () => Promise<void>,
         public onClearCache?: () => Promise<void>
-    ) {}
+    ) {
+        super("DummySearchPlugin", DummyApplicationRuntimeInformation.empty({ userDataPath: applicationTempPath }));
+    }
 
     public getAllItems(): Searchable[] {
         if (this.onGetAllItems) {

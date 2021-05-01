@@ -12,8 +12,20 @@ import { PowershellUtility } from "./Utilities/PowershellUtility";
 import { WindowsApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPreferences";
 import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
 import { TrayIconManager } from "./TrayIconManager";
+import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
+import { SimpleFolderSearchPlugin } from "./Plugins/SimpleFolderSearchPlugin/SimpleFolderSearchPlugin";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
+
+const applicationRuntimeInformation: ApplicationRuntimeInformation = {
+    executablePath: app.getPath("exe"),
+    temporaryDirectoryPath: app.getPath("temp"),
+    userDataPath: app.getPath("userData"),
+    userHomePath: app.getPath("home"),
+};
+
+console.log(applicationRuntimeInformation);
+
 const windowManager = new WindowManager();
 const trayIconManager = new TrayIconManager(ipcMain);
 
@@ -29,7 +41,12 @@ const executePowershellScript = (powershellScript: string): Promise<string> =>
     PowershellUtility.executePowershellScript(powershellScript);
 
 const searchEngine = new SearchEngine({}, [
-    new WindowsApplicationSearchPlugin(executePowershellScript, applicationSearchPreferences),
+    new WindowsApplicationSearchPlugin(
+        applicationRuntimeInformation,
+        executePowershellScript,
+        applicationSearchPreferences
+    ),
+    new SimpleFolderSearchPlugin(applicationRuntimeInformation),
 ]);
 
 const openFilePath = async (filePath: string): Promise<void> => {

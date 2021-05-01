@@ -2,14 +2,17 @@ import { WindowsApplication } from "./WindowsApplication";
 import { WindowsApplicationSearchPreferences } from "./WindowsApplicationSearchPreferences";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 import { SearchPlugin } from "../SearchPlugin";
+import { ApplicationRuntimeInformation } from "../../ApplicationRuntimeInformation";
 
-export class WindowsApplicationSearchPlugin implements SearchPlugin {
+export class WindowsApplicationSearchPlugin extends SearchPlugin {
     private applications: WindowsApplication[];
 
     public constructor(
+        applicationRuntimeInformation: ApplicationRuntimeInformation,
         private readonly executePowershellScript: (powershellScript: string) => Promise<string>,
         private readonly applicationSearchPreferences: WindowsApplicationSearchPreferences
     ) {
+        super("WindowsApplicationSearchPlugin", applicationRuntimeInformation);
         this.applications = [];
     }
 
@@ -25,7 +28,7 @@ export class WindowsApplicationSearchPlugin implements SearchPlugin {
 
     public async clearCache(): Promise<void> {
         try {
-            await this.executePowershellScript(`Remove-Item '${this.getAppIconFolder()}\\*'`);
+            await this.executePowershellScript(`Remove-Item '${this.getTemporaryFolderPath()}\\*'`);
         } catch (error) {
             throw new Error(`WindowsApplicationSearchPlugin failed to clear cache. Reason: ${error}`);
         }
@@ -92,7 +95,7 @@ export class WindowsApplicationSearchPlugin implements SearchPlugin {
                 $Files | ConvertTo-Json -Compress
             }
 
-            Get-WindowsApps -FolderPaths ${this.getFolderPathFilter()} -FileExtensions ${this.getFileExtensionFilter()} -AppIconFolder ${this.getAppIconFolder()}
+            Get-WindowsApps -FolderPaths ${this.getFolderPathFilter()} -FileExtensions ${this.getFileExtensionFilter()} -AppIconFolder ${this.getTemporaryFolderPath()}
         `;
     }
 
@@ -104,9 +107,5 @@ export class WindowsApplicationSearchPlugin implements SearchPlugin {
         return this.applicationSearchPreferences.fileExtensions
             .map((fileExtension) => `'*.${fileExtension}'`)
             .join(",");
-    }
-
-    private getAppIconFolder(): string {
-        return "C:\\Users\\Oliver\\AppData\\Roaming\\ueli\\appicons";
     }
 }

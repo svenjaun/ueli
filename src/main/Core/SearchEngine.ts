@@ -4,6 +4,7 @@ import { SearchPlugin } from "../Plugins/SearchPlugin";
 import { Searchable } from "./Searchable";
 import { SearchEngineSettings } from "./SearchEngineSettings";
 import { SearchEngineRescanError } from "./SearchEngineRescanError";
+import { FileSystemUtility } from "../Utilities/FileSystemUtility";
 
 export class SearchEngine {
     private readonly rescanIntervalInSeconds = 60;
@@ -13,7 +14,7 @@ export class SearchEngine {
     };
 
     constructor(private searchEngineSettings: SearchEngineSettings, private readonly searchPlugins: SearchPlugin[]) {
-        this.rescan();
+        this.initialize();
     }
 
     public search(searchTerm: string): SearchResultItem[] {
@@ -34,6 +35,23 @@ export class SearchEngine {
         } catch (error) {
             throw new Error(`SearchEngine failed to clear caches. Reason: ${error}`);
         }
+    }
+
+    private async initialize(): Promise<void> {
+        await this.createPluginTempFolders();
+        this.rescan();
+    }
+
+    private createPluginTempFolders(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            Promise.all(
+                this.searchPlugins.map((searchPlugin) =>
+                    FileSystemUtility.createFolderIfDoesntExist(searchPlugin.getTemporaryFolderPath())
+                )
+            )
+                .then(() => resolve())
+                .catch((error) => reject(error));
+        });
     }
 
     private async rescan(): Promise<void> {

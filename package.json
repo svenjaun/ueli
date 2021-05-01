@@ -40,6 +40,7 @@
         "electron-builder": "^22.10.5",
         "eslint": "^7.23.0",
         "file-loader": "^6.2.0",
+        "fs-extra": "^9.1.0",
         "fuse.js": "^6.4.6",
         "jest": "^26.6.3",
         "mitt": "^2.1.0",
