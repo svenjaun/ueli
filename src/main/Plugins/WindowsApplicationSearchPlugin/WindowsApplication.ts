@@ -3,9 +3,9 @@ import { Searchable } from "../../Core/Searchable";
 import { FilePathLocationOpener } from "../../LocationOpeners/FilePathLocationOpener";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 
-export class Application implements Searchable {
-    public static fromWindowsAppRetriever(app: WindowsApplicationRetrieverResult): Application {
-        return new Application(app.BaseName, app.FullName, app.IconFilePath);
+export class WindowsApplication implements Searchable {
+    public static fromWindowsAppRetriever(app: WindowsApplicationRetrieverResult): WindowsApplication {
+        return new WindowsApplication(app.BaseName, app.FullName, app.IconFilePath);
     }
 
     private constructor(

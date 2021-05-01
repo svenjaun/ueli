@@ -9,7 +9,7 @@ import { LocationOpeningService } from "./Core/LocationOpeningService";
 import { SearchEngine } from "./Core/SearchEngine";
 import { WindowManager } from "./WindowManager";
 import { PowershellUtility } from "./Utilities/PowershellUtility";
-import { ApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/ApplicationSearchPreferences";
+import { WindowsApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPreferences";
 import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
 import { TrayIconManager } from "./TrayIconManager";
 
@@ -17,7 +17,7 @@ const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 const windowManager = new WindowManager();
 const trayIconManager = new TrayIconManager(ipcMain);
 
-const applicationSearchPreferences: ApplicationSearchPreferences = {
+const applicationSearchPreferences: WindowsApplicationSearchPreferences = {
     folderPaths: [
         "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
         "C:\\Users\\Oliver\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu",

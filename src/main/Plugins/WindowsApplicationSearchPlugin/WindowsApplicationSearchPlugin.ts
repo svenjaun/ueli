@@ -1,26 +1,26 @@
-import { Application } from "./Application";
-import { ApplicationSearchPreferences } from "./ApplicationSearchPreferences";
+import { WindowsApplication } from "./WindowsApplication";
+import { WindowsApplicationSearchPreferences } from "./WindowsApplicationSearchPreferences";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 import { SearchPlugin } from "../SearchPlugin";
 
 export class WindowsApplicationSearchPlugin implements SearchPlugin {
-    private applications: Application[];
+    private applications: WindowsApplication[];
 
     public constructor(
         private readonly executePowershellScript: (powershellScript: string) => Promise<string>,
-        private readonly applicationSearchPreferences: ApplicationSearchPreferences
+        private readonly applicationSearchPreferences: WindowsApplicationSearchPreferences
     ) {
         this.applications = [];
     }
 
-    public getAllItems(): Application[] {
+    public getAllItems(): WindowsApplication[] {
         return this.applications;
     }
 
     public async rescan(): Promise<void> {
         const stdout = await this.executePowershellScript(this.getPowershellScript());
         const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
-        this.applications = apps.map((app) => Application.fromWindowsAppRetriever(app));
+        this.applications = apps.map((app) => WindowsApplication.fromWindowsAppRetriever(app));
     }
 
     public async clearCache(): Promise<void> {
