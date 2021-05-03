@@ -24,8 +24,6 @@ const applicationRuntimeInformation: ApplicationRuntimeInformation = {
     userHomePath: app.getPath("home"),
 };
 
-console.log(applicationRuntimeInformation);
-
 const windowManager = new WindowManager();
 const trayIconManager = new TrayIconManager(ipcMain);
 
