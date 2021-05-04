@@ -1,5 +1,6 @@
 export enum TrayIconEvent {
-    ShowClicked = "ShowClicked",
-    SettingsClicked = "SettingsClicked",
+    ClearCachesClicked = "ClearCachesClicked",
     QuitClicked = "QuitClicked",
+    SettingsClicked = "SettingsClicked",
+    ShowClicked = "ShowClicked",
 }

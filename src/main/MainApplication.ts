@@ -113,6 +113,10 @@ export class MainApplication {
             }
         );
 
+        this.ipcMain.handle(IpcChannel.ClearCaches, () => {
+            return this.clearCaches();
+        });
+
         this.ipcMain.on(IpcChannel.EscapePressed, () => this.windowManager.hideMainWindow());
 
         this.ipcMain.on(IpcChannel.TrayIconEvent, (ipcMainEvent, trayIconEvent: TrayIconEvent) =>
@@ -120,16 +124,27 @@ export class MainApplication {
         );
     }
 
+    private clearCaches(): Promise<void> {
+        return this.searchEngine.clearCaches();
+    }
+
     private handleTrayIconEvent(event: TrayIconEvent): void {
         switch (event) {
             case TrayIconEvent.ShowClicked:
-                return this.windowManager.showMainWindow();
+                this.windowManager.showMainWindow();
+                break;
 
             case TrayIconEvent.SettingsClicked:
-                return this.windowManager.showSettingsWindow();
+                this.windowManager.showSettingsWindow();
+                break;
 
             case TrayIconEvent.QuitClicked:
-                return this.quitApp();
+                this.quitApp();
+                break;
+
+            case TrayIconEvent.ClearCachesClicked:
+                this.clearCaches();
+                break;
 
             default:
                 throw new Error(`Failed to handle tray icon event ${event}. Reason: no handler found.`);

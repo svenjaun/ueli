@@ -28,6 +28,10 @@ export class TrayIconManager {
                 click: () => this.emitTrayIconEvent(TrayIconEvent.SettingsClicked),
             },
             {
+                label: "Clear caches",
+                click: () => this.emitTrayIconEvent(TrayIconEvent.ClearCachesClicked),
+            },
+            {
                 label: "Quit",
                 click: () => this.emitTrayIconEvent(TrayIconEvent.QuitClicked),
             },
