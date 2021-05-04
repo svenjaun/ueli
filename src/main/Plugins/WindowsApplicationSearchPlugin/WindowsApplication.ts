@@ -1,5 +1,6 @@
 import { SearchResultItem } from "../../../common/SearchResultItem";
 import { Searchable } from "../../Core/Searchable";
+import { FilePathExecutor } from "../../Executors/FilePathExecutor";
 import { FilePathLocationOpener } from "../../LocationOpeners/FilePathLocationOpener";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 
@@ -18,7 +19,7 @@ export class WindowsApplication implements Searchable {
         return {
             description: this.filePath,
             executionArgument: this.filePath,
-            executorId: "FilePathExecutor",
+            executorId: FilePathExecutor.executorId,
             icon: this.iconFilePath,
             locationOpenerId: FilePathLocationOpener.locationOpenerId,
             name: this.name,
