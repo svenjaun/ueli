@@ -4,13 +4,15 @@ import { MethodNotImplementedError } from "../../Errors/MethodNotImplementedErro
 import { SearchPlugin } from "../SearchPlugin";
 
 export class DummySearchPlugin extends SearchPlugin {
+    public readonly pluginId = "DummySearchPlugin";
+
     constructor(
         applicationTempPath: string,
         public onGetAllItems?: () => Searchable[],
         public onRescan?: () => Promise<void>,
         public onClearCache?: () => Promise<void>
     ) {
-        super("DummySearchPlugin", DummyApplicationRuntimeInformation.empty({ userDataPath: applicationTempPath }));
+        super(DummyApplicationRuntimeInformation.empty({ userDataPath: applicationTempPath }));
     }
 
     public getAllItems(): Searchable[] {
