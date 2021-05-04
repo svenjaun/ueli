@@ -22,13 +22,7 @@ export class FileSystemUtility {
     public static getFolderItems(folderPath: string): Promise<string[]> {
         return new Promise((resolve, reject) => {
             readdir(folderPath, (error, fileNames) => {
-                error
-                    ? reject(error)
-                    : resolve(
-                          fileNames.map((fileName): string => {
-                              return join(folderPath, fileName);
-                          })
-                      );
+                error ? reject(error) : resolve(fileNames.map((fileName): string => join(folderPath, fileName)));
             });
         });
     }
