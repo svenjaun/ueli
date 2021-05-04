@@ -2,16 +2,17 @@ import { ApplicationRuntimeInformation } from "../../ApplicationRuntimeInformati
 import { FileIconUtility } from "../../Utilities/FileIconUtility";
 import { FileSystemUtility } from "../../Utilities/FileSystemUtility";
 import { SearchPlugin } from "../SearchPlugin";
+import { SimpleFolderSearchItem } from "./SimpleFolderSearchItem";
 import { SimpleFolderSearchResultItem } from "./SimpleFolderSearchResultItem";
 
 export class SimpleFolderSearchPlugin extends SearchPlugin {
     public readonly pluginId = "SimpleFolderSearchPlugin";
 
-    private files: { filePath: string; icon: string }[];
+    private items: SimpleFolderSearchItem[];
 
     public constructor(applicationRuntimeInformation: ApplicationRuntimeInformation) {
         super(applicationRuntimeInformation);
-        this.files = [];
+        this.items = [];
     }
 
     public clearCache(): Promise<void> {
@@ -20,16 +21,16 @@ export class SimpleFolderSearchPlugin extends SearchPlugin {
 
     public async rescan(): Promise<void> {
         const filePaths = await FileSystemUtility.getFolderItems(this.applicationRuntimeInformation.userHomePath);
-        this.files = await Promise.all(filePaths.map((filePath) => this.getIcon(filePath)));
+        this.items = await Promise.all(filePaths.map((filePath) => this.getIcon(filePath)));
     }
 
     public getAllItems(): SimpleFolderSearchResultItem[] {
-        return this.files.map(
+        return this.items.map(
             (file): SimpleFolderSearchResultItem => new SimpleFolderSearchResultItem(file.filePath, file.icon)
         );
     }
 
-    private async getIcon(filePath: string): Promise<{ filePath: string; icon: string }> {
+    private async getIcon(filePath: string): Promise<SimpleFolderSearchItem> {
         return {
             filePath,
             icon: await FileIconUtility.getIconDataUrlFromFilePath(filePath),
