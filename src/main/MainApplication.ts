@@ -9,6 +9,7 @@ import { LocationOpeningService } from "./Core/LocationOpeningService";
 import { SearchEngine } from "./Core/SearchEngine";
 import { TrayIconEvent } from "./TrayIconEvent";
 import { TrayIconManager } from "./TrayIconManager";
+import { UeliCommandEvent } from "./UeliCommandEvent";
 import { WindowManager } from "./WindowManager";
 
 export class MainApplication {
@@ -122,6 +123,10 @@ export class MainApplication {
         this.ipcMain.on(IpcChannel.TrayIconEvent, (ipcMainEvent, trayIconEvent: TrayIconEvent) =>
             this.handleTrayIconEvent(trayIconEvent)
         );
+
+        this.ipcMain.on(IpcChannel.UeliCommandEvent, (ipcMainEvent, ueliCommandEvent: UeliCommandEvent) =>
+            this.handleUeliCommandEvent(ueliCommandEvent)
+        );
     }
 
     private clearCaches(): Promise<void> {
@@ -148,6 +153,21 @@ export class MainApplication {
 
             default:
                 throw new Error(`Failed to handle tray icon event ${event}. Reason: no handler found.`);
+        }
+    }
+
+    private handleUeliCommandEvent(event: UeliCommandEvent): void {
+        switch (event) {
+            case UeliCommandEvent.OpenSettings:
+                this.windowManager.showSettingsWindow();
+                break;
+
+            case UeliCommandEvent.QuitApp:
+                this.quitApp();
+                break;
+
+            default:
+                throw new Error(`Failed to handle ueli command event ${event}. Reason: no handler found`);
         }
     }
 }

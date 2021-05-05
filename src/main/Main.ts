@@ -14,6 +14,8 @@ import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSear
 import { TrayIconManager } from "./TrayIconManager";
 import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
 import { SimpleFolderSearchPlugin } from "./Plugins/SimpleFolderSearchPlugin/SimpleFolderSearchPlugin";
+import { UeliCommandsPlugin } from "./Plugins/UeliCommandsPlugin/UeliCommandsPlugin";
+import { UeliCommandExecutor } from "./Executors/UeliCommandExecutor";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 
@@ -45,6 +47,7 @@ const searchEngine = new SearchEngine({}, [
         applicationSearchPreferences
     ),
     new SimpleFolderSearchPlugin(applicationRuntimeInformation),
+    new UeliCommandsPlugin(applicationRuntimeInformation),
 ]);
 
 const openFilePath = async (filePath: string): Promise<void> => {
@@ -59,7 +62,7 @@ const openFileLocation = async (filePath: string): Promise<void> => {
     shell.showItemInFolder(filePath);
 };
 
-const executionService = new ExecutionService([new FilePathExecutor(openFilePath)]);
+const executionService = new ExecutionService([new FilePathExecutor(openFilePath), new UeliCommandExecutor(ipcMain)]);
 const locationOpeningService = new LocationOpeningService([new FilePathLocationOpener(openFileLocation)]);
 
 new MainApplication(

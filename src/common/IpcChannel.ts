@@ -6,4 +6,5 @@ export enum IpcChannel {
     OpenLocation = "OpenLocation",
     Search = "Search",
     TrayIconEvent = "TrayIconEvent",
+    UeliCommandEvent = "UeliCommandEvent",
 }
