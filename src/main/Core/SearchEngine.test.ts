@@ -2,6 +2,7 @@ import { join } from "path";
 import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
 import { DummySearchPlugin } from "../Plugins/DummySearchPlugin/DummySearchPlugin";
 import { FileSystemUtility } from "../Utilities/FileSystemUtility";
+import { TimeUtility } from "../Utilities/TimeUtility";
 import { DummySearchable } from "./DummySearchable";
 import { Searchable } from "./Searchable";
 import { SearchEngine } from "./SearchEngine";
@@ -16,6 +17,7 @@ describe(SearchEngine, () => {
         const onRescan = jest.fn(() => Promise.resolve());
         const dummySearchPlugin = new DummySearchPlugin(tempFolderPath, undefined, onRescan, undefined);
         new SearchEngine({}, [dummySearchPlugin]);
+        await TimeUtility.wait(250);
         const pluginFolderExists = await FileSystemUtility.pathExists(dummySearchPlugin.getTemporaryFolderPath());
         expect(pluginFolderExists).toBe(true);
         expect(onRescan.mock.calls.length).toBe(1);
