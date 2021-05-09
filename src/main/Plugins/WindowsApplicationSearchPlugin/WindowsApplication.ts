@@ -1,3 +1,4 @@
+import { LocalFilePathSearchResultItemIcon } from "../../../common/LocalFilePathSearchResultItemIcon";
 import { SearchResultItem } from "../../../common/SearchResultItem";
 import { Searchable } from "../../Core/Searchable";
 import { FilePathExecutor } from "../../Executors/FilePathExecutor";
@@ -20,7 +21,7 @@ export class WindowsApplication implements Searchable {
             description: this.filePath,
             executionArgument: this.filePath,
             executorId: FilePathExecutor.executorId,
-            icon: this.iconFilePath,
+            icon: new LocalFilePathSearchResultItemIcon(this.iconFilePath),
             locationOpenerId: FilePathLocationOpener.locationOpenerId,
             name: this.name,
             openLocationArgument: this.filePath,

@@ -1,3 +1,5 @@
+import { SearchResultItemIcon } from "./SearchResultItemIcon";
+
 export interface SearchResultItem {
     name: string;
     description: string;
@@ -5,5 +7,5 @@ export interface SearchResultItem {
     openLocationArgument: string;
     locationOpenerId: string;
     executorId: string;
-    icon: string;
+    icon: SearchResultItemIcon;
 }

@@ -8,30 +8,33 @@
         @mouseleave="onMouseLeave"
     >
         <div class="icon-container">
-            <img class="icon" :src="icon" />
+            <SearchResultIcon :icon="item.icon" />
         </div>
         <div class="info-container">
             <div class="name">
-                {{ name }}
+                {{ item.name }}
             </div>
             <div class="description">
-                {{ description }}
+                {{ item.description }}
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { SearchResultItem } from "../../../common/SearchResultItem";
+import { ObjectUtility } from "../../../common/ObjectUtility";
+import SearchResultIcon from "./SearchResultIcon.vue";
 
 export default defineComponent({
     emits: {
-        openLocation(): boolean {
-            return true;
+        openLocation(item: SearchResultItem): boolean {
+            return item !== undefined;
         },
 
-        execute(): boolean {
-            return true;
+        execute(item: SearchResultItem): boolean {
+            return item !== undefined;
         },
 
         mouseenter(): boolean {
@@ -43,24 +46,18 @@ export default defineComponent({
         },
     },
 
+    components: {
+        SearchResultIcon,
+    },
+
     props: {
+        item: {
+            type: Object as PropType<SearchResultItem>,
+            required: true,
+        },
+
         position: {
             type: Number,
-            required: true,
-        },
-
-        name: {
-            type: String,
-            required: true,
-        },
-
-        description: {
-            type: String,
-            required: true,
-        },
-
-        icon: {
-            type: String,
             required: true,
         },
 
@@ -79,9 +76,9 @@ export default defineComponent({
     methods: {
         onClick(mouseEvent: MouseEvent): void {
             if (mouseEvent.ctrlKey || mouseEvent.metaKey) {
-                this.$emit("openLocation");
+                this.$emit("openLocation", ObjectUtility.clone(this.item));
             } else {
-                this.$emit("execute");
+                this.$emit("execute", ObjectUtility.clone(this.item));
             }
         },
 
@@ -116,19 +113,17 @@ export default defineComponent({
     background-color: var(--ueli-black-500);
 }
 
-.container:active > .icon-container > .icon {
-    transform: scale(1.1);
-}
-
-.icon {
-    width: 40px;
-    height: 40px;
-    transition: var(--ueli-transition);
-    vertical-align: middle;
+.icon-container {
+    height: var(--search-result-icon-size);
+    width: var(--search-result-icon-size);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .info-container {
-    padding: 0 var(--ueli-spacing-4x);
+    padding: 0 var(--ueli-spacing-3x);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;

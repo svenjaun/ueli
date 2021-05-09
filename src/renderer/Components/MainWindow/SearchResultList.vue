@@ -3,15 +3,13 @@
         <SearchResult
             v-for="(searchResultItem, index) in searchResultItems"
             :key="index"
-            :name="searchResultItem.name"
-            :description="searchResultItem.description"
-            :icon="searchResultItem.icon"
+            :item="searchResultItem"
             :position="index"
             :hovered="currentlyHoveredPosition === index"
             @mouseenter="onMouseEnter(index)"
             @mouseleave="onMouseLeave(index)"
-            @execute="execute(searchResultItem)"
-            @openLocation="openLocation(searchResultItem)"
+            @execute="execute"
+            @openLocation="openLocation"
         />
     </div>
 </template>
@@ -22,6 +20,7 @@ import SearchResult from "./SearchResult.vue";
 import { SearchResultItem } from "../../../common/SearchResultItem";
 import { vueEventEmitter } from "../../VueEventEmitter";
 import { VueEvent } from "../../VueEvent";
+import { ObjectUtility } from "../../../common/ObjectUtility";
 
 interface Data {
     currentlyHoveredPosition?: number;
@@ -55,11 +54,11 @@ export default defineComponent({
 
     methods: {
         execute(searchResultItem: SearchResultItem): void {
-            this.$emit("executionRequested", { ...searchResultItem });
+            this.$emit("executionRequested", ObjectUtility.clone(searchResultItem));
         },
 
         openLocation(searchResultItem: SearchResultItem): void {
-            this.$emit("openLocationRequested", { ...searchResultItem });
+            this.$emit("openLocationRequested", ObjectUtility.clone(searchResultItem));
         },
 
         currentlySelectedIndexChange(direction: "ArrowUp" | "ArrowDown"): void {
@@ -137,8 +136,8 @@ export default defineComponent({
 
             if (currentlySelectedItem) {
                 ctrlOrMetaPressed
-                    ? this.openLocation({ ...currentlySelectedItem })
-                    : this.execute({ ...currentlySelectedItem });
+                    ? this.openLocation(ObjectUtility.clone(currentlySelectedItem))
+                    : this.execute(ObjectUtility.clone(currentlySelectedItem));
             }
         });
     },

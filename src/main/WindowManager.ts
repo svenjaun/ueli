@@ -25,7 +25,7 @@ export class WindowManager {
         });
 
         this.mainWindow.loadFile(this.mainHtmlFilePath);
-        this.mainWindow.on("blur", () => this.hideMainWindow());
+        // this.mainWindow.on("blur", () => this.hideMainWindow());
     }
 
     public createSettingsWindow(): void {

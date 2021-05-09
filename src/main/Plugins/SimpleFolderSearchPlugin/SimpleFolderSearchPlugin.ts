@@ -26,14 +26,14 @@ export class SimpleFolderSearchPlugin extends SearchPlugin {
 
     public getAllItems(): SimpleFolderSearchResultItem[] {
         return this.items.map(
-            (file): SimpleFolderSearchResultItem => new SimpleFolderSearchResultItem(file.filePath, file.icon)
+            (file): SimpleFolderSearchResultItem => new SimpleFolderSearchResultItem(file.filePath, file.iconDataUrl)
         );
     }
 
     private async getIcon(filePath: string): Promise<SimpleFolderSearchItem> {
         return {
             filePath,
-            icon: await FileIconUtility.getIconDataUrlFromFilePath(filePath),
+            iconDataUrl: await FileIconUtility.getIconDataUrlFromFilePath(filePath),
         };
     }
 }

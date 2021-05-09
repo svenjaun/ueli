@@ -36,4 +36,6 @@
     --ueli-scrollbar-size: 8px;
     --ueli-scrollbar-background-color: var(--ueli--black-800);
     --ueli-scrollbar-foreground-color: var(--ueli-black-700);
+
+    --search-result-icon-size: 40px;
 }

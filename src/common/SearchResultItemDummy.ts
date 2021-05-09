@@ -1,3 +1,4 @@
+import { DummySearchResultItemIcon } from "./DummySearchResultItemIcon";
 import { SearchResultItem } from "./SearchResultItem";
 
 export class SearchResultItemDummy {
@@ -14,7 +15,7 @@ export class SearchResultItemDummy {
             description,
             executionArgument,
             executorId,
-            icon,
+            icon: new DummySearchResultItemIcon(icon),
             locationOpenerId,
             name,
             openLocationArgument,
