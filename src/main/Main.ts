@@ -8,14 +8,12 @@ import { MainApplication } from "./MainApplication";
 import { LocationOpeningService } from "./Core/LocationOpeningService";
 import { SearchEngine } from "./Core/SearchEngine";
 import { WindowManager } from "./WindowManager";
-import { PowershellUtility } from "./Utilities/PowershellUtility";
-import { WindowsApplicationSearchPreferences } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPreferences";
-import { WindowsApplicationSearchPlugin } from "./Plugins/WindowsApplicationSearchPlugin/WindowsApplicationSearchPlugin";
 import { TrayIconManager } from "./TrayIconManager";
 import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
-import { SimpleFolderSearchPlugin } from "./Plugins/SimpleFolderSearchPlugin/SimpleFolderSearchPlugin";
-import { UeliCommandsPlugin } from "./Plugins/UeliCommandsPlugin/UeliCommandsPlugin";
 import { UeliCommandExecutor } from "./Executors/UeliCommandExecutor";
+import { OperatingSystem } from "../common/OperatingSystem";
+import { WindowsPluginRepository } from "./WindowsPluginRepository";
+import { MacOsPluginRepository } from "./MacOsPluginRepository";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 
@@ -27,28 +25,14 @@ const applicationRuntimeInformation: ApplicationRuntimeInformation = {
 };
 
 const windowManager = new WindowManager();
-const trayIconManager = new TrayIconManager(ipcMain);
+const trayIconManager = new TrayIconManager(operatingSystem, ipcMain);
 
-const applicationSearchPreferences: WindowsApplicationSearchPreferences = {
-    folderPaths: [
-        "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
-        "C:\\Users\\Oliver\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu",
-    ],
-    fileExtensions: ["lnk"],
-};
+const pluginRepository =
+    operatingSystem === OperatingSystem.Windows
+        ? new WindowsPluginRepository(applicationRuntimeInformation)
+        : new MacOsPluginRepository(applicationRuntimeInformation);
 
-const executePowershellScript = (powershellScript: string): Promise<string> =>
-    PowershellUtility.executePowershellScript(powershellScript);
-
-const searchEngine = new SearchEngine({}, [
-    new WindowsApplicationSearchPlugin(
-        applicationRuntimeInformation,
-        executePowershellScript,
-        applicationSearchPreferences
-    ),
-    new SimpleFolderSearchPlugin(applicationRuntimeInformation),
-    new UeliCommandsPlugin(applicationRuntimeInformation),
-]);
+const searchEngine = new SearchEngine({}, pluginRepository.getAllPlugins());
 
 const openFilePath = async (filePath: string): Promise<void> => {
     const errorMessage = await shell.openPath(filePath);
