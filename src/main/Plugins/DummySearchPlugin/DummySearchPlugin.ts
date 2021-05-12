@@ -8,16 +8,16 @@ export class DummySearchPlugin extends SearchPlugin {
 
     constructor(
         applicationTempPath: string,
-        public onGetAllItems?: () => Searchable[],
+        public onGetAllSearchables?: () => Searchable[],
         public onRescan?: () => Promise<void>,
         public onClearCache?: () => Promise<void>
     ) {
         super(DummyApplicationRuntimeInformation.empty({ userDataPath: applicationTempPath }));
     }
 
-    public getAllItems(): Searchable[] {
-        if (this.onGetAllItems) {
-            return this.onGetAllItems();
+    public getAllSearchables(): Searchable[] {
+        if (this.onGetAllSearchables) {
+            return this.onGetAllSearchables();
         }
 
         throw new MethodNotImplementedError();

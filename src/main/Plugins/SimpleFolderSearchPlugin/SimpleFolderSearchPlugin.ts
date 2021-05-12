@@ -24,7 +24,7 @@ export class SimpleFolderSearchPlugin extends SearchPlugin {
         this.items = await Promise.all(filePaths.map((filePath) => this.getIcon(filePath)));
     }
 
-    public getAllItems(): SimpleFolderSearchResultItem[] {
+    public getAllSearchables(): SimpleFolderSearchResultItem[] {
         return this.items.map((file) => new SimpleFolderSearchResultItem(file.filePath, file.iconDataUrl));
     }
 

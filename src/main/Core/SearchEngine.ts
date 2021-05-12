@@ -4,9 +4,9 @@ import { SearchPlugin } from "../Plugins/SearchPlugin";
 import { Searchable } from "./Searchable";
 import { SearchEngineSettings } from "./SearchEngineSettings";
 import { SearchEngineRescanError } from "./SearchEngineRescanError";
-import { FileSystemUtility } from "../Utilities/FileSystemUtility";
 
 export class SearchEngine {
+    private initialized = false;
     private readonly rescanIntervalInSeconds = 60;
     private readonly defaultSearchEngineSettings: Fuse.IFuseOptions<SearchResultItem> = {
         threshold: 0.4,
@@ -14,11 +14,15 @@ export class SearchEngine {
     };
 
     constructor(private searchEngineSettings: SearchEngineSettings, private readonly searchPlugins: SearchPlugin[]) {
-        this.initialize();
+        this.initialize().finally(() => (this.initialized = true));
+    }
+
+    public isInitialized(): boolean {
+        return this.initialized;
     }
 
     public search(searchTerm: string): SearchResultItem[] {
-        if (searchTerm.trim().length === 0) {
+        if (!this.initialized || searchTerm.trim().length === 0) {
             return [];
         }
 
@@ -44,11 +48,7 @@ export class SearchEngine {
     }
 
     private async createPluginTempFolders(): Promise<void> {
-        await Promise.all(
-            this.searchPlugins.map((searchPlugin) => {
-                FileSystemUtility.createFolderIfDoesntExist(searchPlugin.getTemporaryFolderPath());
-            })
-        );
+        await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.createTemporaryFolder()));
     }
 
     private async rescan(): Promise<void> {
@@ -68,7 +68,7 @@ export class SearchEngine {
         let result: Searchable[] = [];
 
         this.searchPlugins.forEach((searchPlugin) => {
-            result = result.concat(searchPlugin.getAllItems());
+            result = result.concat(searchPlugin.getAllSearchables());
         });
 
         return result;

@@ -81,7 +81,7 @@ export class WindowsApplicationSearchPlugin extends SearchPlugin {
         this.applications = [];
     }
 
-    public getAllItems(): WindowsApplication[] {
+    public getAllSearchables(): WindowsApplication[] {
         return this.applications;
     }
 

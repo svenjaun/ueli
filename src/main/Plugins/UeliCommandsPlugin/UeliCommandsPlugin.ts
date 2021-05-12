@@ -21,7 +21,7 @@ export class UeliCommandsPlugin extends SearchPlugin {
         return Promise.resolve();
     }
 
-    public getAllItems(): UeliCommand[] {
+    public getAllSearchables(): UeliCommand[] {
         return this.items;
     }
 
