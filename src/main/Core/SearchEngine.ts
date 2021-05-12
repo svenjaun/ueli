@@ -22,11 +22,12 @@ export class SearchEngine {
             return [];
         }
 
-        const allSearchResultItems = this.getAllSearchables().map((searchable) => searchable.toSearchResultItem());
-
-        const settings = Object.assign(this.defaultSearchEngineSettings, this.searchEngineSettings);
-
-        return new Fuse(allSearchResultItems, settings).search(searchTerm).map((s) => s.item);
+        return new Fuse(
+            this.getAllSearchables().map((searchable) => searchable.toSearchResultItem()),
+            Object.assign(this.defaultSearchEngineSettings, this.searchEngineSettings)
+        )
+            .search(searchTerm)
+            .map((fuseSearchResult) => fuseSearchResult.item);
     }
 
     public async clearCaches(): Promise<void> {
@@ -42,16 +43,12 @@ export class SearchEngine {
         this.rescan();
     }
 
-    private createPluginTempFolders(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            Promise.all(
-                this.searchPlugins.map((searchPlugin) =>
-                    FileSystemUtility.createFolderIfDoesntExist(searchPlugin.getTemporaryFolderPath())
-                )
-            )
-                .then(() => resolve())
-                .catch((error) => reject(error));
-        });
+    private async createPluginTempFolders(): Promise<void> {
+        await Promise.all(
+            this.searchPlugins.map((searchPlugin) => {
+                FileSystemUtility.createFolderIfDoesntExist(searchPlugin.getTemporaryFolderPath());
+            })
+        );
     }
 
     private async rescan(): Promise<void> {
