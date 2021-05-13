@@ -5,8 +5,9 @@ import { SearchPlugin } from "../SearchPlugin";
 import { SimpleFolderSearchItem } from "./SimpleFolderSearchItem";
 import { SimpleFolderSearchResultItem } from "./SimpleFolderSearchResultItem";
 
-export class SimpleFolderSearchPlugin extends SearchPlugin {
+export class SimpleFolderSearchPlugin extends SearchPlugin<unknown> {
     public readonly pluginId = "SimpleFolderSearchPlugin";
+    protected readonly defaultSettings = {};
 
     private items: SimpleFolderSearchItem[];
 

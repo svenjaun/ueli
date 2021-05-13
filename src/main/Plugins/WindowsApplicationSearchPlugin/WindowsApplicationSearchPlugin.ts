@@ -1,10 +1,11 @@
 import { WindowsApplication } from "./WindowsApplication";
-import { WindowsApplicationSearchPreferences } from "./WindowsApplicationSearchPreferences";
+import { WindowsApplicationSearchSettings } from "./WindowsApplicationSearchSettings";
 import { WindowsApplicationRetrieverResult } from "./WindowsApplicationRetrieverResult";
 import { SearchPlugin } from "../SearchPlugin";
 import { ApplicationRuntimeInformation } from "../../ApplicationRuntimeInformation";
+import { join } from "path";
 
-export class WindowsApplicationSearchPlugin extends SearchPlugin {
+export class WindowsApplicationSearchPlugin extends SearchPlugin<WindowsApplicationSearchSettings> {
     private static readonly extractShortcutPowershellScript = `
         function Extract-Shortcut {
             param(
@@ -69,15 +70,30 @@ export class WindowsApplicationSearchPlugin extends SearchPlugin {
     `;
 
     public readonly pluginId = "WindowsApplicationSearchPlugin";
-
+    protected readonly defaultSettings: WindowsApplicationSearchSettings;
     private applications: WindowsApplication[];
 
     public constructor(
         applicationRuntimeInformation: ApplicationRuntimeInformation,
-        private readonly executePowershellScript: (powershellScript: string) => Promise<string>,
-        private readonly applicationSearchPreferences: WindowsApplicationSearchPreferences
+        private readonly executePowershellScript: (powershellScript: string) => Promise<string>
     ) {
         super(applicationRuntimeInformation);
+
+        this.defaultSettings = {
+            folderPaths: [
+                "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
+                join(
+                    applicationRuntimeInformation.userHomePath,
+                    "AppData",
+                    "Roaming",
+                    "Microsoft",
+                    "Windows",
+                    "Start Menu"
+                ),
+            ],
+            fileExtensions: ["lnk"],
+        };
+
         this.applications = [];
     }
 
@@ -86,35 +102,37 @@ export class WindowsApplicationSearchPlugin extends SearchPlugin {
     }
 
     public async rescan(): Promise<void> {
-        const stdout = await this.executePowershellScript(this.getPowershellScript());
+        const settings = await this.getSettings();
+        const stdout = await this.executePowershellScript(this.getPowershellScript(settings));
         const apps = JSON.parse(stdout) as WindowsApplicationRetrieverResult[];
         this.applications = apps.map((app) => WindowsApplication.fromWindowsAppRetriever(app));
     }
 
     public async clearCache(): Promise<void> {
         try {
-            await this.executePowershellScript(`Remove-Item '${this.getTemporaryFolderPath()}\\*'`);
+            await this.executePowershellScript(`Remove-Item '${this.getTemporaryFolderPath()}\\*.png'`);
         } catch (error) {
             throw new Error(`WindowsApplicationSearchPlugin failed to clear cache. Reason: ${error}`);
         }
     }
 
-    private getPowershellScript(): string {
+    private getPowershellScript(settings: WindowsApplicationSearchSettings): string {
+        const folderPaths = this.getFolderPathFilter(settings.folderPaths);
+        const fileExtensions = this.getFileExtensionFilter(settings.fileExtensions);
+        const tempFolderPath = this.getTemporaryFolderPath();
+
         return `
             ${WindowsApplicationSearchPlugin.extractShortcutPowershellScript}
             ${WindowsApplicationSearchPlugin.getWindowsAppsPowershellScript}
-
-            Get-WindowsApps -FolderPaths ${this.getFolderPathFilter()} -FileExtensions ${this.getFileExtensionFilter()} -AppIconFolder ${this.getTemporaryFolderPath()}
+            Get-WindowsApps -FolderPaths ${folderPaths} -FileExtensions ${fileExtensions} -AppIconFolder ${tempFolderPath}
         `;
     }
 
-    private getFolderPathFilter(): string {
-        return this.applicationSearchPreferences.folderPaths.map((folderPath) => `'${folderPath}'`).join(",");
+    private getFolderPathFilter(folderPaths: string[]): string {
+        return folderPaths.map((folderPath) => `'${folderPath}'`).join(",");
     }
 
-    private getFileExtensionFilter(): string {
-        return this.applicationSearchPreferences.fileExtensions
-            .map((fileExtension) => `'*.${fileExtension}'`)
-            .join(",");
+    private getFileExtensionFilter(fileExtensions: string[]): string {
+        return fileExtensions.map((fileExtension) => `'*.${fileExtension}'`).join(",");
     }
 }

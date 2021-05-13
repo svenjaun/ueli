@@ -4,18 +4,18 @@ import { SimpleFolderSearchPlugin } from "./Plugins/SimpleFolderSearchPlugin/Sim
 import { UeliCommandsPlugin } from "./Plugins/UeliCommandsPlugin/UeliCommandsPlugin";
 
 export abstract class PluginRepository {
-    protected abstract getOperatingSystemSpecificPlugins(): SearchPlugin[];
+    protected abstract getOperatingSystemSpecificPlugins(): SearchPlugin<unknown>[];
 
     protected constructor(protected readonly applicationRuntimeInformation: ApplicationRuntimeInformation) {}
 
-    protected getCommonPlugins(): SearchPlugin[] {
+    protected getCommonPlugins(): SearchPlugin<unknown>[] {
         return [
             new SimpleFolderSearchPlugin(this.applicationRuntimeInformation),
             new UeliCommandsPlugin(this.applicationRuntimeInformation),
         ];
     }
 
-    public getAllPlugins(): SearchPlugin[] {
+    public getAllPlugins(): SearchPlugin<unknown>[] {
         return this.getCommonPlugins().concat(this.getOperatingSystemSpecificPlugins());
     }
 }

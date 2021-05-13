@@ -129,6 +129,10 @@ export class MainApplication {
         );
     }
 
+    private rescan(): Promise<void> {
+        return this.searchEngine.rescan();
+    }
+
     private clearCaches(): Promise<void> {
         return this.searchEngine.clearCaches();
     }
@@ -145,6 +149,10 @@ export class MainApplication {
 
             case TrayIconEvent.QuitClicked:
                 this.quitApp();
+                break;
+
+            case TrayIconEvent.RescanClicked:
+                this.rescan();
                 break;
 
             case TrayIconEvent.ClearCachesClicked:
@@ -164,6 +172,10 @@ export class MainApplication {
 
             case UeliCommandEvent.QuitApp:
                 this.quitApp();
+                break;
+
+            case UeliCommandEvent.Rescan:
+                this.rescan();
                 break;
 
             default:

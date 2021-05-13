@@ -33,6 +33,10 @@ export class TrayIconManager {
                 click: () => this.emitTrayIconEvent(TrayIconEvent.SettingsClicked),
             },
             {
+                label: "Rescan",
+                click: () => this.emitTrayIconEvent(TrayIconEvent.RescanClicked),
+            },
+            {
                 label: "Clear caches",
                 click: () => this.emitTrayIconEvent(TrayIconEvent.ClearCachesClicked),
             },

@@ -1,4 +1,4 @@
-import { emptyDir, rmdir, ensureDir, pathExists, readdir } from "fs-extra";
+import { emptyDir, rmdir, ensureDir, pathExists, readdir, readFile, writeFile } from "fs-extra";
 import { join } from "path";
 
 export class FileSystemUtility {
@@ -23,6 +23,30 @@ export class FileSystemUtility {
         return new Promise((resolve, reject) => {
             readdir(folderPath, (error, fileNames) => {
                 error ? reject(error) : resolve(fileNames.map((fileName): string => join(folderPath, fileName)));
+            });
+        });
+    }
+
+    public static readJsonFile<T>(filePath: string): Promise<T> {
+        return new Promise((resolve, reject) => {
+            readFile(filePath, (error, data) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    try {
+                        resolve(JSON.parse(data.toString()));
+                    } catch (error) {
+                        reject(error);
+                    }
+                }
+            });
+        });
+    }
+
+    public static writeJsonFile<T>(data: T, filePath: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            writeFile(filePath, JSON.stringify(data), (error) => {
+                error ? reject(error) : resolve();
             });
         });
     }

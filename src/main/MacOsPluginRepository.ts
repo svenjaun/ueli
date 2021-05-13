@@ -7,7 +7,7 @@ export class MacOsPluginRepository extends PluginRepository {
         super(applicationRuntimeInformation);
     }
 
-    protected getOperatingSystemSpecificPlugins(): SearchPlugin[] {
+    protected getOperatingSystemSpecificPlugins(): SearchPlugin<unknown>[] {
         return [];
     }
 }

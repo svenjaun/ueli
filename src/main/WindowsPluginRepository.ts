@@ -9,18 +9,10 @@ export class WindowsPluginRepository extends PluginRepository {
         super(applicationRuntimeInformation);
     }
 
-    protected getOperatingSystemSpecificPlugins(): SearchPlugin[] {
+    protected getOperatingSystemSpecificPlugins(): SearchPlugin<unknown>[] {
         return [
-            new WindowsApplicationSearchPlugin(
-                this.applicationRuntimeInformation,
-                (powershellScript) => PowershellUtility.executePowershellScript(powershellScript),
-                {
-                    folderPaths: [
-                        "C:\\ProgramData\\Microsoft\\Windows\\Start Menu",
-                        "C:\\Users\\Oliver\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu",
-                    ],
-                    fileExtensions: ["lnk"],
-                }
+            new WindowsApplicationSearchPlugin(this.applicationRuntimeInformation, (powershellScript) =>
+                PowershellUtility.executePowershellScript(powershellScript)
             ),
         ];
     }

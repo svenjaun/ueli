@@ -3,8 +3,10 @@ import { DummyApplicationRuntimeInformation } from "../../DummyApplicationRuntim
 import { MethodNotImplementedError } from "../../Errors/MethodNotImplementedError";
 import { SearchPlugin } from "../SearchPlugin";
 
-export class DummySearchPlugin extends SearchPlugin {
+export class DummySearchPlugin extends SearchPlugin<unknown> {
     public readonly pluginId = "DummySearchPlugin";
+
+    protected readonly defaultSettings = {};
 
     constructor(
         applicationTempPath: string,

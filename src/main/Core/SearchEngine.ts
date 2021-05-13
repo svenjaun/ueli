@@ -13,7 +13,10 @@ export class SearchEngine {
         keys: ["name"],
     };
 
-    constructor(private searchEngineSettings: SearchEngineSettings, private readonly searchPlugins: SearchPlugin[]) {
+    constructor(
+        private searchEngineSettings: SearchEngineSettings,
+        private readonly searchPlugins: SearchPlugin<unknown>[]
+    ) {
         this.initialize().finally(() => (this.initialized = true));
     }
 
@@ -34,6 +37,25 @@ export class SearchEngine {
             .map((fuseSearchResult) => fuseSearchResult.item);
     }
 
+    public async rescan(): Promise<void> {
+        console.log("Starting rescan...");
+
+        const rescanIntervalInMilliseconds = this.rescanIntervalInSeconds * 1000;
+        const scheduleNextRescan = () => {
+            console.log(`Scheduled next rescan in ${this.rescanIntervalInSeconds} seconds.`);
+            setTimeout(() => this.rescan(), rescanIntervalInMilliseconds);
+        };
+
+        try {
+            await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.rescan()));
+        } catch (error) {
+            this.handleError(new SearchEngineRescanError(error));
+        } finally {
+            console.log("Finished rescan.");
+            scheduleNextRescan();
+        }
+    }
+
     public async clearCaches(): Promise<void> {
         try {
             await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.clearCache()));
@@ -44,6 +66,7 @@ export class SearchEngine {
 
     private async initialize(): Promise<void> {
         await this.createPluginTempFolders();
+        await this.createPluginSettingFilesIfNecessary();
         this.rescan();
     }
 
@@ -51,17 +74,8 @@ export class SearchEngine {
         await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.createTemporaryFolder()));
     }
 
-    private async rescan(): Promise<void> {
-        const rescanIntervalInMilliseconds = this.rescanIntervalInSeconds * 1000;
-        const scheduleNextRescan = () => setTimeout(() => this.rescan(), rescanIntervalInMilliseconds);
-
-        try {
-            await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.rescan()));
-        } catch (error) {
-            this.handleError(new SearchEngineRescanError(error));
-        } finally {
-            scheduleNextRescan();
-        }
+    private async createPluginSettingFilesIfNecessary(): Promise<void> {
+        await Promise.all(this.searchPlugins.map((searchPlugin) => searchPlugin.createSettingsFileIfNotExists()));
     }
 
     private getAllSearchables(): Searchable[] {
