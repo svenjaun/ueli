@@ -9,7 +9,7 @@ import { SearchEngine } from "./SearchEngine";
 
 describe(SearchEngine, () => {
     const tempFolderPath = join(__dirname, "temp");
-    const searchEngineInitializationDuration = 50;
+    const searchEngineInitializationDuration = 150;
 
     beforeEach(async () => await FileSystemUtility.createFolderIfDoesntExist(tempFolderPath));
     afterEach(async () => await FileSystemUtility.deleteFolderRecursively(tempFolderPath));
