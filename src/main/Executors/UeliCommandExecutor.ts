@@ -1,6 +1,6 @@
 import { IpcMain } from "electron";
 import { IpcChannel } from "../../common/IpcChannel";
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 import { Executor } from "./Executor";
 
 export class UeliCommandExecutor extends Executor {

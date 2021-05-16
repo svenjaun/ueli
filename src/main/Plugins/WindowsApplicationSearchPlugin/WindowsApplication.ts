@@ -1,5 +1,5 @@
-import { LocalFilePathSearchResultItemIcon } from "../../../common/LocalFilePathSearchResultItemIcon";
-import { SearchResultItem } from "../../../common/SearchResultItem";
+import { LocalFilePathSearchResultItemIcon } from "../../../common/SearchResult/LocalFilePathSearchResultItemIcon";
+import { SearchResultItem } from "../../../common/SearchResult/SearchResultItem";
 import { Searchable } from "../../Core/Searchable";
 import { FilePathExecutor } from "../../Executors/FilePathExecutor";
 import { FilePathLocationOpener } from "../../LocationOpeners/FilePathLocationOpener";

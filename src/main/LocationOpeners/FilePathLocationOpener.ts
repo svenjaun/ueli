@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 import { LocationOpener } from "./LocationOpener";
 
 export class FilePathLocationOpener extends LocationOpener {

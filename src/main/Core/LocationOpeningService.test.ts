@@ -1,4 +1,4 @@
-import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
+import { SearchResultItemDummy } from "../../common/SearchResult/SearchResultItemDummy";
 import { LocationOpenerDummy } from "../LocationOpeners/LocationOpenerDummy";
 import { LocationOpeningService } from "./LocationOpeningService";
 

@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 
 export abstract class Executor {
     protected constructor(public readonly executorId: string) {}

@@ -1,6 +1,6 @@
 import { app, globalShortcut, ipcMain, shell } from "electron";
 import { platform } from "os";
-import { OperatingSystemHelper } from "../common/OperatingSystemHelper";
+import { OperatingSystemHelper } from "../common/OperatingSystem/OperatingSystemHelper";
 import { ExecutionService } from "./Core/ExecutionService";
 import { FilePathExecutor } from "./Executors/FilePathExecutor";
 import { FilePathLocationOpener } from "./LocationOpeners/FilePathLocationOpener";
@@ -11,7 +11,7 @@ import { WindowManager } from "./WindowManager";
 import { TrayIconManager } from "./TrayIconManager";
 import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
 import { UeliCommandExecutor } from "./Executors/UeliCommandExecutor";
-import { OperatingSystem } from "../common/OperatingSystem";
+import { OperatingSystem } from "../common/OperatingSystem/OperatingSystem";
 import { WindowsPluginRepository } from "./PluginRepository/WindowsPluginRepository";
 import { MacOsPluginRepository } from "./PluginRepository/MacOsPluginRepository";
 

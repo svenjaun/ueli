@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 import { Executor } from "./Executor";
 
 export class FilePathExecutor extends Executor {

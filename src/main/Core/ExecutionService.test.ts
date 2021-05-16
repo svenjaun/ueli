@@ -1,7 +1,7 @@
 import { ExecutionService } from "./ExecutionService";
 import { Executor } from "../Executors/Executor";
 import { ExecutorDummy } from "../Executors/ExecutorDummy";
-import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
+import { SearchResultItemDummy } from "../../common/SearchResult/SearchResultItemDummy";
 
 describe(ExecutionService, () => {
     describe(Executor.prototype.execute, () => {

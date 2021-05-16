@@ -1,8 +1,8 @@
 import { App, GlobalShortcut, IpcMain } from "electron";
 import { IpcMainInvokeEvent } from "electron/main";
 import { IpcChannel } from "../common/IpcChannel";
-import { OperatingSystem } from "../common/OperatingSystem";
-import { SearchResultItem } from "../common/SearchResultItem";
+import { OperatingSystem } from "../common/OperatingSystem/OperatingSystem";
+import { SearchResultItem } from "../common/SearchResult/SearchResultItem";
 import { CommandlineSwitchConfiguration } from "./CommandlineSwitchConfiguration";
 import { ExecutionService } from "./Core/ExecutionService";
 import { LocationOpeningService } from "./Core/LocationOpeningService";

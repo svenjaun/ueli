@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 import { Executor } from "../Executors/Executor";
 
 export class ExecutionService {

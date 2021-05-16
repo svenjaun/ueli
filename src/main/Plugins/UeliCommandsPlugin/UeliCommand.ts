@@ -1,5 +1,5 @@
-import { DataUrlSearchResultItemIcon } from "../../../common/DataUrlSearchResultItemIcon";
-import { SearchResultItem } from "../../../common/SearchResultItem";
+import { DataUrlSearchResultItemIcon } from "../../../common/SearchResult/DataUrlSearchResultItemIcon";
+import { SearchResultItem } from "../../../common/SearchResult/SearchResultItem";
 import { Searchable } from "../../Core/Searchable";
 import { UeliCommandExecutor } from "../../Executors/UeliCommandExecutor";
 import { UeliCommandEvent } from "../../UeliCommandEvent";

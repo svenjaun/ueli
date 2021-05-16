@@ -1,4 +1,4 @@
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 
 export interface Searchable {
     toSearchResultItem(): SearchResultItem;

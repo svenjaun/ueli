@@ -1,7 +1,7 @@
 import { Menu, Tray, IpcMain } from "electron";
 import { join } from "path";
 import { IpcChannel } from "../common/IpcChannel";
-import { OperatingSystem } from "../common/OperatingSystem";
+import { OperatingSystem } from "../common/OperatingSystem/OperatingSystem";
 import { TrayIconEvent } from "./TrayIconEvent";
 
 export class TrayIconManager {

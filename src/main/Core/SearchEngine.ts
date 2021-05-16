@@ -1,5 +1,5 @@
 import Fuse from "fuse.js";
-import { SearchResultItem } from "../../common/SearchResultItem";
+import { SearchResultItem } from "../../common/SearchResult/SearchResultItem";
 import { SearchPlugin } from "../Plugins/SearchPlugin";
 import { Searchable } from "./Searchable";
 import { SearchEngineSettings } from "./SearchEngineSettings";

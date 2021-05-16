@@ -1,5 +1,5 @@
 import { join } from "path";
-import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
+import { SearchResultItemDummy } from "../../common/SearchResult/SearchResultItemDummy";
 import { DummySearchPlugin } from "../Plugins/DummySearchPlugin/DummySearchPlugin";
 import { FileSystemUtility } from "../Utilities/FileSystemUtility";
 import { TimeUtility } from "../Utilities/TimeUtility";

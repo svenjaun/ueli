@@ -1,5 +1,5 @@
 import { FilePathExecutor } from "./FilePathExecutor";
-import { SearchResultItemDummy } from "../../common/SearchResultItemDummy";
+import { SearchResultItemDummy } from "../../common/SearchResult/SearchResultItemDummy";
 
 describe(FilePathExecutor, () => {
     it("should succeed if the file path opener resolves", async (done) => {
