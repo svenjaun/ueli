@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { LocalFilePathSearchResultItemIcon } from "../../../common/LocalFilePathSearchResultItemIcon";
+import { LocalFilePathSearchResultItemIcon } from "../../../common/SearchResult/LocalFilePathSearchResultItemIcon";
 
 export default defineComponent({
     props: {

@@ -19,7 +19,7 @@ import UserInput from "./Components/MainWindow/UserInput.vue";
 import SearchResultList from "./Components/MainWindow/SearchResultList.vue";
 import { vueEventEmitter } from "./VueEventEmitter";
 import { VueEvent } from "./VueEvent";
-import { SearchResultItem } from "../common/SearchResultItem";
+import { SearchResultItem } from "../common/SearchResult/SearchResultItem";
 import { IpcChannel } from "../common/IpcChannel";
 
 import "./Styles/variables.css";

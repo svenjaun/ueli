@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { DataUrlSearchResultItemIcon } from "../../../common/DataUrlSearchResultItemIcon";
+import { DataUrlSearchResultItemIcon } from "../../../common/SearchResult/DataUrlSearchResultItemIcon";
 
 export default defineComponent({
     props: {

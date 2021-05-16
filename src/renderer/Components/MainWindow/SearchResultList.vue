@@ -17,7 +17,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import SearchResult from "./SearchResult.vue";
-import { SearchResultItem } from "../../../common/SearchResultItem";
+import { SearchResultItem } from "../../../common/SearchResult/SearchResultItem";
 import { vueEventEmitter } from "../../VueEventEmitter";
 import { VueEvent } from "../../VueEvent";
 import { ObjectUtility } from "../../../common/ObjectUtility";

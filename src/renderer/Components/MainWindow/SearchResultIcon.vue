@@ -7,8 +7,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { SearchResultItemIcon } from "../../../common/SearchResultItemIcon";
-import { SearchResultItemIconType } from "../../../common/SearchResultItemIconType";
+import { SearchResultItemIcon } from "../../../common/SearchResult/SearchResultItemIcon";
+import { SearchResultItemIconType } from "../../../common/SearchResult/SearchResultItemIconType";
 import FilePathSearchResultIcon from "./FilePathSearchResultIcon.vue";
 import DataUrlSearchResultIcon from "./DataUrlSearchResultIcon.vue";
 

@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { SearchResultItem } from "../../../common/SearchResultItem";
+import { SearchResultItem } from "../../../common/SearchResult/SearchResultItem";
 import { ObjectUtility } from "../../../common/ObjectUtility";
 import SearchResultIcon from "./SearchResultIcon.vue";
 
