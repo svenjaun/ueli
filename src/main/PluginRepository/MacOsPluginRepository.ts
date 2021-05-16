@@ -1,6 +1,6 @@
-import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
+import { ApplicationRuntimeInformation } from "../ApplicationRuntimeInformation";
 import { PluginRepository } from "./PluginRepository";
-import { SearchPlugin } from "./Plugins/SearchPlugin";
+import { SearchPlugin } from "../Plugins/SearchPlugin";
 
 export class MacOsPluginRepository extends PluginRepository {
     public constructor(applicationRuntimeInformation: ApplicationRuntimeInformation) {

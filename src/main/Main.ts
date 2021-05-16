@@ -12,8 +12,8 @@ import { TrayIconManager } from "./TrayIconManager";
 import { ApplicationRuntimeInformation } from "./ApplicationRuntimeInformation";
 import { UeliCommandExecutor } from "./Executors/UeliCommandExecutor";
 import { OperatingSystem } from "../common/OperatingSystem";
-import { WindowsPluginRepository } from "./WindowsPluginRepository";
-import { MacOsPluginRepository } from "./MacOsPluginRepository";
+import { WindowsPluginRepository } from "./PluginRepository/WindowsPluginRepository";
+import { MacOsPluginRepository } from "./PluginRepository/MacOsPluginRepository";
 
 const operatingSystem = OperatingSystemHelper.getOperatingSystem(platform());
 

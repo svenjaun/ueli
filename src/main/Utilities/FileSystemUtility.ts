@@ -27,26 +27,23 @@ export class FileSystemUtility {
         });
     }
 
-    public static readJsonFile<T>(filePath: string): Promise<T> {
-        return new Promise((resolve, reject) => {
-            readFile(filePath, (error, data) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    try {
-                        resolve(JSON.parse(data.toString()));
-                    } catch (error) {
-                        reject(error);
-                    }
-                }
-            });
-        });
+    public static async readJsonFile<T>(filePath: string): Promise<T> {
+        const fileContent = await this.readFile(filePath);
+        return JSON.parse(fileContent.toString());
     }
 
     public static writeJsonFile<T>(data: T, filePath: string): Promise<void> {
         return new Promise((resolve, reject) => {
             writeFile(filePath, JSON.stringify(data), (error) => {
                 error ? reject(error) : resolve();
+            });
+        });
+    }
+
+    private static readFile(filePath: string): Promise<Buffer> {
+        return new Promise((resolve, reject) => {
+            readFile(filePath, (error, data) => {
+                error ? reject(error) : resolve(data);
             });
         });
     }
