@@ -9,6 +9,11 @@
         "indent": [true, "spaces", 4],
         "prefer-readonly": true
     },
+    "typeRoots": [
+        "./typings",
+        "./node_modules/@types/"
+    ],
+    "noImplicitAny": true,
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": ["./package.json"]

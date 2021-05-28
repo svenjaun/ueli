@@ -8,6 +8,7 @@ export enum PluginSettings {
     OperatingSystemSettings = "Operating System Settings",
     Calculator = "Calculator",
     Url = "Url",
+    MTG = "Mtg",
     Email = "Email",
     CurrencyConverter = "Currency Converter",
     Workflow = "Workflow",

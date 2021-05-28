@@ -36,6 +36,8 @@ export const settingMenuItemComponent = Vue.extend({
                     return translations.colorThemeSettings;
                 case PluginSettings.CurrencyConverter:
                     return translations.currencyConverter;
+                case PluginSettings.MTG:
+                    return "SHITTTT";
                 case PluginSettings.Commandline:
                     return translations.commandline;
                 case PluginSettings.Dictionary:
