@@ -13,7 +13,6 @@
         "./typings",
         "./node_modules/@types/"
     ],
-    "noImplicitAny": true,
     "rulesDirectory": [],
     "linterOptions": {
         "exclude": ["./package.json"]

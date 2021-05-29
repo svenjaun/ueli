@@ -2,31 +2,38 @@ import { ExecutionPlugin } from "../../execution-plugin";
 import { SearchResultItem } from "../../../common/search-result-item";
 import { TranslationSet } from "../../../common/translation/translation-set";
 import { PluginType } from "../../plugin-type";
-import { UrlOptions } from "../../../common/config/url-options";
 import { MtgOptions } from "../../../common/config/mtg-options";
 import { UserConfigOptions } from "../../../common/config/user-config-options";
-import { someRandomIcon } from "../../../common/icon/default-icons";
+import { Card, getCardSuggestions, getIconType } from "./mtg-helper";
 
 export class MtgPlugin implements ExecutionPlugin {
-    public readonly pluginType = PluginType.Url;
+    public readonly pluginType = PluginType.MTG;
+    private readonly urlExecutor: (url: string) => Promise<void>;
     private config: MtgOptions;
+    private maxSearchResultPerPage: number;
 
-    constructor(config: UrlOptions) {
+    constructor(config: MtgOptions, maxSearchResultPerPage: number, urlExecutor: (url: string) => Promise<void>) {
         this.config = config;
+        this.urlExecutor = urlExecutor;
+        this.maxSearchResultPerPage = maxSearchResultPerPage;
     }
+
     isValidUserInput(userInput: string, fallback?: boolean): boolean {
-        console.log("isValidUserInput");
-        return true;
+        return userInput.indexOf(this.config.prefix) !== -1 && userInput.length > this.config.prefix.length;
     }
+
     getSearchResults(userInput: string, fallback?: boolean): Promise<SearchResultItem[]> {
-        console.log("getSearchResults", userInput);
-        return new Promise( (resolve) => {
-            resolve(this.makeSomeShit(userInput));
-        })
+        // When problems with async occur, change to await to .then
+        return new Promise(async (resolve) => {
+            let result = await getCardSuggestions(userInput.split(this.config.prefix)[1], this.maxSearchResultPerPage);
+            resolve(this.generateSearchResultItems(result));
+        });
     }
+
     updateConfig(updatedConfig: UserConfigOptions, translationSet: TranslationSet): Promise<void> {
-        console.log("updateConfig");
         return new Promise((resolve) => {
+            this.config = updatedConfig.mtgOptions;
+            this.maxSearchResultPerPage = updatedConfig.appearanceOptions.maxSearchResultsPerPage;
             resolve();
         });
     }
@@ -36,25 +43,25 @@ export class MtgPlugin implements ExecutionPlugin {
     }
 
     public execute(searchResultItem: SearchResultItem, privileged: boolean): Promise<void> {
-        console.log("Execute Order 66: ", searchResultItem.executionArgument);
-        
-        return new Promise((resolve) => {
-            resolve()
-        });
+        return this.urlExecutor(searchResultItem.executionArgument);
     }
 
-    private makeSomeShit(userInput: string) : SearchResultItem[] {
-        let results = [];
-        let result: SearchResultItem = {
-            description: `Lol this is description: ${userInput}`,//this.translationSet.openNewMail,
-            executionArgument: `Make the execution xy: ${userInput}`,
-            hideMainWindowAfterExecution: true,
-            icon: someRandomIcon,
-            name: userInput,
-            originPluginType: this.pluginType,
-            searchable: [],
-        };
-        results.push(result);
+    private generateSearchResultItems(cards: Card[]): SearchResultItem[] {
+        let results: SearchResultItem[] = [];
+        for (let card of cards) {
+            let result: SearchResultItem = {
+                description: card.text ? `${card.text}` : `${card.type}`,
+                executionArgument: `https://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=${card.id}`,
+                hideMainWindowAfterExecution: true,
+                icon: getIconType(card.manaCost, card.colors),
+                name: this.config.showManacost ? `${card.name} - ${card.manaCost}` : `${card.name}`,
+                originPluginType: this.pluginType,
+                searchable: [],
+            };
+            if (!results.some(cardFilter => cardFilter.name == result.name)) {
+                results.push(result);
+            }
+        }
         return results;
     }
 }

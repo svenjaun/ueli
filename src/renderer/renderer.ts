@@ -60,6 +60,7 @@ import { PluginType } from "../main/plugin-type";
 import { dictionarySettingsComponent } from "./settings/dictionary-settings-component";
 import { browserBookmarkSettingsComponent } from "./settings/browser-bookmark-settings-component";
 import { controlPanelSettingsComponent } from "./settings/control-panel-settings-component";
+import { mtgSettingsComponent } from "./settings/mtg-settings-component";
 
 Vue.component("user-input", userInputComponent);
 Vue.component("search-results", searchResultsComponent);
@@ -92,6 +93,7 @@ Vue.component("operating-system-settings-settings", operatingSystemSettingsSetti
 Vue.component("calculator-settings", calculatorSettingsComponent);
 Vue.component("dictionary-settings", dictionarySettingsComponent);
 Vue.component("url-settings", urlSettingsComponent);
+Vue.component("mtg-settings", mtgSettingsComponent);
 Vue.component("email-settings", emailSettingsComponent);
 Vue.component("currency-converter-settings", currencyConverterSettingsComponent);
 Vue.component("workflow-settings", workflowSettingsComponent);

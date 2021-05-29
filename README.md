@@ -1,7 +1,13 @@
+
+
+# Changes on svenjaun/ueli
+
+A new plugin was added in this fork. "MTG. This one allows you to search for a card of the Magic the Gathering card game.\
+In the settings under "MTG" the prefix and the title of the search can be customized.
+
 # ueli
 
 This is a keystroke launcher for Windows and macOS.
-
 ![example-image](assets/feature-app-search.png)
 
 ## Table of contents

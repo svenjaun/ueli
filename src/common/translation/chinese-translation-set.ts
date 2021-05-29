@@ -361,4 +361,8 @@ export const chineseTranslationSet: TranslationSet = {
 
     controlPanel: "控制面板",
     controlPanelSettingsDescription: "这个插件让你可以搜索控制面板项",
+    
+    mtg: "MTG",
+    mtgDescription: "使用此插件，您可以搜索 Magic The Gathering 卡並在 Gatherer 中搜索它們。",
+    mtgShowManacost: "在標題中顯示法力消耗",
 };

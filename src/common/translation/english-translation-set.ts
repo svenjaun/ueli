@@ -370,4 +370,8 @@ export const englishTranslationSet: TranslationSet = {
 
     controlPanel: "Control Panel",
     controlPanelSettingsDescription: "This plugin enables you to quickly find control panel items.",
+
+    mtg: "MTG",
+    mtgDescription: "With this plugin you can search for Magic The Gathering cards and search for them in the gatherer.",
+    mtgShowManacost: "Show mana costs in title",
 };

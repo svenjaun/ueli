@@ -373,4 +373,8 @@ export const germanTranslationSet: TranslationSet = {
 
     controlPanel: "Systemsteuerung",
     controlPanelSettingsDescription: "Dieses Plugin erlaubt es dir, Elemente der Systemsteuerung schnell zu finden.",
+
+    mtg: "MTG",
+    mtgDescription: "Mit diesem Plugin kannst du nach Magic The Gathering Karten suchen, und sie im Gatherer suchen.",
+    mtgShowManacost: "Manakosten im Titel anzeigen",
 };

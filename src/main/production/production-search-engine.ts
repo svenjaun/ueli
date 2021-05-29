@@ -215,7 +215,7 @@ export function getProductionSearchEngine(
         new CommandlinePlugin(config.commandlineOptions, translationSet, commandlineExecutor, logger),
         new ColorConverterPlugin(config.colorConverterOptions, electronClipboardCopier),
         new DictionaryPlugin(config.dictionaryOptions, electronClipboardCopier, getGoogleDictionaryDefinitions),
-        new MtgPlugin(config.urlOptions),
+        new MtgPlugin(config.mtgOptions, config.appearanceOptions.maxSearchResultsPerPage, urlExecutor),
     ];
 
     const fallbackPlugins: ExecutionPlugin[] = [webSearchPlugin];

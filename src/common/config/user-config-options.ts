@@ -29,6 +29,7 @@ import { ApplicationSearchOptions, defaultApplicationSearchOptions } from "./app
 import { defaultDictionaryOptions, DictionaryOptions } from "./dictionary-options";
 import { BrowserBookmarksOptions, defaultBrowserBookmarksOptions } from "./browser-bookmarks-options";
 import { ControlPanelOptions, defaultControlPanelOptions } from "./control-panel-options";
+import { defaultMtgOptions, MtgOptions } from "./mtg-options";
 
 export interface UserConfigOptions {
     appearanceOptions: AppearanceOptions;
@@ -47,6 +48,7 @@ export interface UserConfigOptions {
     operatingSystemSettingsOptions: OperatingSystemSettingsOptions;
     calculatorOptions: CalculatorOptions;
     urlOptions: UrlOptions;
+    mtgOptions: MtgOptions;
     emailOptions: EmailOptions;
     currencyConverterOptions: CurrencyConverterOptions;
     workflowOptions: WorkflowOptions;
@@ -81,6 +83,7 @@ export const defaultUserConfigOptions: UserConfigOptions = {
     simpleFolderSearchOptions: defaultSimpleFolderSearchOptions,
     translationOptions: defaultTranslationOptions,
     urlOptions: defaultUrlOptions,
+    mtgOptions: defaultMtgOptions,
     uwpSearchOptions: defaultUwpSearchOptions,
     websearchOptions: defaultWebSearchOptions,
     workflowOptions: defaultWorkflowOptions,

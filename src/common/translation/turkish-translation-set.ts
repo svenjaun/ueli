@@ -374,4 +374,8 @@ export const turkishTranslationSet: TranslationSet = {
 
     controlPanel: "Kontrol Paneli",
     controlPanelSettingsDescription: "Bu eklenti, kontrol paneli öğelerini hızlı bir şekilde bulmanızı sağlar.",
+    
+    mtg: "MTG",
+    mtgDescription: "Bu eklenti ile Magic The Gathering kartlarını arayabilir ve bunları toplayıcıda arayabilirsiniz.",
+    mtgShowManacost: "Mana maliyetlerini başlıkta göster",
 };

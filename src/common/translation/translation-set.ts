@@ -358,4 +358,8 @@ export interface TranslationSet {
 
     controlPanel: string;
     controlPanelSettingsDescription: string;
+
+    mtg: string;
+    mtgDescription: string;
+    mtgShowManacost: string;
 }

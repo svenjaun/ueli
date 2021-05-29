@@ -368,4 +368,8 @@ export const englishTranslationSet: TranslationSet = {
 
     controlPanel: "Ovládací panely",
     controlPanelSettingsDescription: "Tento plugin umožňuje rychle najít položky ovládacího panelu.",
+
+    mtg: "MTG",
+    mtgDescription: "S tímto pluginem můžete hledat karty Magic The Gathering a hledat je ve sběrači.",
+    mtgShowManacost: "Zobrazit cenu many v názvu",
 };

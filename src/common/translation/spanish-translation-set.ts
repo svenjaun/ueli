@@ -375,4 +375,8 @@ export const spanishTranslationSet: TranslationSet = {
 
     controlPanel: "Panel de control",
     controlPanelSettingsDescription: "Este plugin te permite encontrar rápidamente elementos del panel de control.",
+    
+    mtg: "MTG",
+    mtgDescription: "Con este complemento puedes buscar cartas de Magic The Gathering y buscarlas en el recolector.",
+    mtgShowManacost: "Mostrar costos de maná en el título",
 };

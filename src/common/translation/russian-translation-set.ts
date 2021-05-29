@@ -367,4 +367,8 @@ export const russianTranslationSet: TranslationSet = {
 
     controlPanel: "панель управления",
     controlPanelSettingsDescription: "Этот плагин позволяет быстро находить элементы панели управления.",
+    
+    mtg: "MTG",
+    mtgDescription: "С помощью этого плагина вы можете искать карты Magic The Gathering и искать их в сборщике.",
+    mtgShowManacost: "Показывать мана-затраты в заголовке",
 };
