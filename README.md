@@ -5,6 +5,9 @@
 A new plugin was added in this fork. 'MTG'. This allows you to search for a card of the card game "Magic the Gathering" .\
 In the settings under "MTG" the prefix and the title of the search can be customized.
 
+# Thanks
+Thanks to [Oliver Schwendener](https://github.com/oliverschwendener/) for this awesome tool!
+
 # ueli
 
 This is a keystroke launcher for Windows and macOS.
